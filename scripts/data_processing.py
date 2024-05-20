@@ -15,6 +15,13 @@ def preprocess_data(btc):
 
     btc_range = btc[(btc['Date'] >= start_date) & (btc['Date'] <= end_date)]
     btc = btc_range.reset_index(drop=True)
+
+    # Calculate returns
+    btc['btc_Dernier Prix_returns'] = btc['Dernier Prix'].pct_change()
+
+    # Calculate volatility (e.g., rolling window of 4 periods)
+    btc['btc_Dernier Prix_volatility'] = btc['Dernier Prix'].rolling(window=4).std()
+
     return btc
 
 def load_all_data(tickers, file_paths):
@@ -43,4 +50,5 @@ def merge_datasets(all_data):
     merged_df = pd.concat(all_data, axis=1)
     merged_df = merged_df.loc[:,~merged_df.columns.duplicated()]
     return merged_df
+
 
