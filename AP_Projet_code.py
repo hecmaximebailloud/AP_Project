@@ -63,6 +63,7 @@ dataset_returns_zscores = pd.DataFrame(dataset_returns_zscores)
 # Extract features and labels
 features = dataset_prices_returns_volatility.drop(columns=['btc_Dernier Prix', 'btc_Dernier Prix_returns', 'btc_Dernier Prix_volatility'])
 labels = dataset_prices_returns_volatility['btc_Dernier Prix']
+st.write("labels:", labels)
 
 # Debug: Print the columns of dataset_prices
 st.write("Columns in dataset_prices:", dataset_prices.columns.tolist())
