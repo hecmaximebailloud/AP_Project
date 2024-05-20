@@ -11,20 +11,10 @@ def preprocess_data(btc):
     start_date = pd.to_datetime('2011-09-01')
     end_date = pd.to_datetime('2023-12-24')
 
-    # Ensure 'Date' column is in datetime format
     btc['Date'] = pd.to_datetime(btc['Date'], errors='coerce')
 
     btc_range = btc[(btc['Date'] >= start_date) & (btc['Date'] <= end_date)]
     btc = btc_range.reset_index(drop=True)
-
-    # Rename 'Dernier Prix' to 'btc_Dernier Prix'
-    btc.rename(columns={'Dernier Prix': 'btc_Dernier Prix'}, inplace=True)
-
-    # Calculate returns
-    btc['btc_Dernier Prix_returns'] = btc['btc_Dernier Prix'].pct_change()
-
-    # Calculate volatility (e.g., rolling window of 4 periods)
-    btc['btc_Dernier Prix_volatility'] = btc['btc_Dernier Prix'].rolling(window=4).std()
 
     return btc
 
