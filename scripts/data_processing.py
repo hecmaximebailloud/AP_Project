@@ -52,6 +52,10 @@ def merge_datasets(all_data):
     
     merged_df = pd.concat(all_data, axis=1)
     merged_df = merged_df.loc[:,~merged_df.columns.duplicated()]
+
+    # Drop columns with 'Unnamed' in their names
+    merged_df = merged_df.loc[:, ~merged_df.columns.str.contains('Unnamed')]
+    
     return merged_df
 
 def calculate_returns(df):
@@ -89,5 +93,6 @@ def calculate_z_score(returns_df, volatility_df, prices_df):
     z_score_df.fillna(0, inplace=True)
 
     return z_score_df
+
 
 
