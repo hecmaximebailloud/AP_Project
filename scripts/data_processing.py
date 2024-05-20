@@ -18,13 +18,7 @@ def preprocess_data(btc):
 
     # Rename 'Dernier Prix' to 'btc_Dernier Prix'
     btc.rename(columns={'Dernier Prix': 'btc_Dernier Prix'}, inplace=True)
-
-    # Calculate returns
-    btc['btc_Dernier Prix_returns'] = btc['btc_Dernier Prix'].pct_change()
-
-    # Calculate volatility (e.g., rolling window of 4 periods)
-    btc['btc_Dernier Prix_volatility'] = btc['btc_Dernier Prix'].rolling(window=4).std()
-
+    
     return btc
 
 def load_all_data(tickers, file_paths):
