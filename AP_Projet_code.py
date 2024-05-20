@@ -73,8 +73,23 @@ missing_columns = [col for col in expected_columns if col not in dataset_prices.
 if missing_columns:
     st.write(f"Missing columns in dataset_prices: {missing_columns}")
 
-# Extract features and labels if the columns are present
-if not missing_columns:
+# Debug: Check for NaN values in features and labels
+st.write("Checking for NaN values in features and labels...")
+st.write("NaN values in features:", features.isna().sum().sum())
+st.write("NaN values in labels:", labels.isna().sum().sum())
+
+# Debug: Check data types of features and labels
+st.write("Data types of features:")
+st.write(features.dtypes)
+st.write("Data type of labels:")
+st.write(labels.dtype)
+
+# Ensure there are no NaN values in features and labels
+features = features.fillna(0)
+labels = labels.fillna(0)
+
+# Extract features and labels if the columns are present and there are no NaN values
+if not missing_columns and not features.isna().sum().sum() and not labels.isna().sum().sum():
     # Train Random Forest and get best hyperparameters
     best_params = train_random_forest(features, labels)
     rf_model = train_rf_model(features, labels, best_params)
@@ -113,4 +128,5 @@ if not missing_columns:
     This strategy demonstrates the practical application of the model predictions.
     """)
 else:
-    st.error("Required columns are missing from dataset_prices. Please check the preprocessing steps.")
+    st.error("Required columns are missing from dataset_prices or NaN values are present in features/labels. Please check the preprocessing steps.")
+
