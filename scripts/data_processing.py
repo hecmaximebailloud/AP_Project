@@ -9,7 +9,7 @@ def load_data(file_path):
 
 def preprocess_data(btc):
     start_date = pd.to_datetime('09/01/2011')  
-    end_date = pd.to_datetime('24/12/2023'
+    end_date = pd.to_datetime('24/12/2023')
 
     # Ensure 'Date' column is in datetime format
     btc['Date'] = pd.to_datetime(btc['Date'], errors='coerce')
