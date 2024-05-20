@@ -20,7 +20,7 @@ btc = load_data(btc_file)
 btc = preprocess_data(btc)
 
 all_data = load_all_data(tickers, file_paths)
-all_data = preprocess_all_data(all_data, pd.to_datetime('2011-09-01'))
+all_data = preprocess_all_data(all_data, pd.to_datetime('09/01/2011'))
 merged_df = merge_datasets([btc] + all_data)
 
 # Extracting columns containing dates and data
