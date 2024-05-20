@@ -23,27 +23,21 @@ all_data = [btc] + load_all_data(tickers, file_paths)
 all_data = preprocess_all_data(all_data, pd.to_datetime('2011-09-01'))
 merged_df = merge_datasets(all_data)
 
-# Extracting columns containing dates and data
-data_columns = merged_df.iloc[:, 1::2]  # Selecting every feature column
-dates_columns = merged_df.iloc[:, 0]  # Selecting one date column
+data_columns = merged_df.iloc[0:, 1::2]  # Selecting every feature column
+dates_columns = merged_df.iloc[0:, 0]  # Selecting one date column
 
-# Creating a DataFrame with only dates and data columns
 dataset_prices = pd.concat([dates_columns, data_columns], axis=1)
 dataset_prices = pd.DataFrame(dataset_prices)
 
-# Ensure 'Date' column is in datetime format
 dataset_prices['Date'] = pd.to_datetime(dataset_prices['Date'])
 
-# Sort DataFrame by the 'Date' column in ascending order
 dataset_prices = dataset_prices.sort_values(by='Date')
 
-# Resetting index after sorting
 dataset_prices = dataset_prices.reset_index(drop=True)
 
-# Filling missing values by propagating last valid observation forward
 dataset_prices = dataset_prices.ffill(axis=1)
 
-# Setting 'Date' column as index
+dataset_prices['Date'] = pd.to_datetime(dataset_prices['Date'])
 dataset_prices.set_index('Date', inplace=True)
 
 # Calculate returns, volatility, and z-scores
