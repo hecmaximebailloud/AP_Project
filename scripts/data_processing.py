@@ -20,6 +20,12 @@ def preprocess_data(btc):
     # Rename 'Dernier Prix' to 'btc_Dernier Prix'
     btc.rename(columns={'Dernier Prix': 'btc_Dernier Prix'}, inplace=True)
 
+    # Calculate returns
+    btc['btc_Dernier Prix_returns'] = btc['btc_Dernier Prix'].pct_change()
+
+    # Calculate volatility (e.g., rolling window of 4 periods)
+    btc['btc_Dernier Prix_volatility'] = btc['btc_Dernier Prix'].rolling(window=4).std()
+
     return btc
 
 def load_all_data(tickers, file_paths):
@@ -49,13 +55,17 @@ def merge_datasets(all_data):
     return merged_df
 
 def calculate_returns(df):
+    # Ensure the DataFrame has numeric columns
     numeric_cols = df.columns.difference(['Date'])
     df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
 
     returns_df = pd.DataFrame(index=df.index)
     for col in numeric_cols:
+        # Debug: Check the column values before calculation
         print(f"Calculating returns for column: {col}")
         print(df[col].head())
+
+        # Calculate returns: (current value / previous value) - 1
         returns_df[col + '_returns'] = (df[col] / df[col].shift(1) - 1).replace([np.inf, -np.inf, np.nan], 0)
 
     return returns_df
@@ -85,3 +95,4 @@ def calculate_z_score(returns_df, volatility_df, prices_df):
     z_score_df.fillna(0, inplace=True)
 
     return z_score_df
+
