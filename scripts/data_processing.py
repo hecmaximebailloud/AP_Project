@@ -16,11 +16,14 @@ def preprocess_data(btc):
     btc_range = btc[(btc['Date'] >= start_date) & (btc['Date'] <= end_date)]
     btc = btc_range.reset_index(drop=True)
 
+    # Rename 'Dernier Prix' to 'btc_Dernier Prix'
+    btc.rename(columns={'Dernier Prix': 'btc_Dernier Prix'}, inplace=True)
+
     # Calculate returns
-    btc['btc_Dernier Prix_returns'] = btc['Dernier Prix'].pct_change()
+    btc['btc_Dernier Prix_returns'] = btc['btc_Dernier Prix'].pct_change()
 
     # Calculate volatility (e.g., rolling window of 4 periods)
-    btc['btc_Dernier Prix_volatility'] = btc['Dernier Prix'].rolling(window=4).std()
+    btc['btc_Dernier Prix_volatility'] = btc['btc_Dernier Prix'].rolling(window=4).std()
 
     return btc
 
@@ -28,16 +31,15 @@ def load_all_data(tickers, file_paths):
     all_data = []
     for ticker, file_path in zip(tickers, file_paths):
         data = load_data(file_path)
+        # Rename 'Dernier Prix' to include the ticker name
+        data.rename(columns={'Dernier Prix': f'{ticker}_Dernier Prix'}, inplace=True)
         all_data.append(data)
     return all_data
 
 def preprocess_all_data(all_data, start_date):
-    keep_columns = ['Date', 'Dernier Prix']
     for i, element in enumerate(all_data):
-        element = element[keep_columns].copy()
         element['Date'] = pd.to_datetime(element['Date'], errors='coerce')
         element.drop(element[element['Date'] < start_date].index, inplace=True)
-        all_data[i] = element
     return all_data
 
 def merge_datasets(all_data):
@@ -50,5 +52,42 @@ def merge_datasets(all_data):
     merged_df = pd.concat(all_data, axis=1)
     merged_df = merged_df.loc[:,~merged_df.columns.duplicated()]
     return merged_df
+
+def calculate_returns(df):
+    numeric_cols = df.columns.difference(['Date'])
+    df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
+
+    returns_df = pd.DataFrame(index=df.index)
+    for col in numeric_cols:
+        returns_df[col + '_returns'] = (df[col] / df[col].shift(1) - 1).replace([np.inf, -np.inf, np.nan], 0)
+
+    return returns_df
+
+def calculate_volatility(df, window):
+    numeric_cols = df.columns.difference(['Date'])
+    df[numeric_cols] = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
+
+    volatility_df = pd.DataFrame(index=df.index)
+    for col in numeric_cols:
+        volatility_df[col + '_volatility'] = df[col].rolling(window=window).std()
+
+    volatility_df.replace([np.inf, -np.inf], np.nan, inplace=True)
+    volatility_df.fillna(0, inplace=True)
+
+    return volatility_df
+
+def calculate_z_score(returns_df, volatility_df, prices_df):
+    numeric_cols = prices_df.columns.difference(['Date'])
+    prices_df[numeric_cols] = prices_df[numeric_cols].apply(pd.to_numeric, errors='coerce')
+    
+    z_score_df = pd.DataFrame(index=prices_df.index)
+    for col in numeric_cols:
+        z_score_df[col + '_z_score'] = returns_df[col + '_returns'] / volatility_df[col + '_volatility']
+    
+    z_score_df.replace([np.inf, -np.inf], np.nan, inplace=True)
+    z_score_df.fillna(0, inplace=True)
+
+    return z_score_df
+
 
 
