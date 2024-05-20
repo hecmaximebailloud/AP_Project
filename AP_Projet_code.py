@@ -101,8 +101,7 @@ if not missing_columns:
 
     st.header("Comparison of Predictions")
     fig_combined = make_subplots(rows=1, cols=1)
-    fig_combined.add_trace(go.Scatter(
-                           x=dataset_prices.index, y=dataset_prices['btc_Dernier Prix'], mode='lines', name='Actual Price'))
+    fig_combined.add_trace(go.Scatter(x=dataset_prices.index, y=dataset_prices['btc_Dernier Prix'], mode='lines', name='Actual Price'))
     fig_combined.add_trace(go.Scatter(x=rf_df['Date'], y=rf_df['Predicted Price'], mode='lines', name='RF Prediction'))
     # Add SARIMA and LSTM traces here
     fig_combined.update_layout(title='Model Predictions vs Actual Price', xaxis_title='Date', yaxis_title='Price')
