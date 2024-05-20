@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from scripts.data_processing import load_data, preprocess_data, load_all_data, preprocess_all_data, merge_datasets
+from scripts.data_processing import load_data, preprocess_data, load_all_data, preprocess_all_data, merge_datasets, calculate_returns, calculate_volatility, calculate_z_score
 from scripts.model_training import train_random_forest, train_rf_model
 from scripts.model_evaluation import evaluate_model
 
@@ -23,8 +23,46 @@ all_data = [btc] + load_all_data(tickers, file_paths)
 all_data = preprocess_all_data(all_data, pd.to_datetime('2011-09-01'))
 merged_df = merge_datasets(all_data)
 
-# Extract features and labels for Random Forest
-dataset_prices = merged_df.set_index('Date')
+# Extracting columns containing dates and data
+data_columns = merged_df.iloc[:, 1::2]  # Selecting every feature column
+dates_columns = merged_df.iloc[:, 0]  # Selecting one date column
+
+# Creating a DataFrame with only dates and data columns
+dataset_prices = pd.concat([dates_columns, data_columns], axis=1)
+dataset_prices = pd.DataFrame(dataset_prices)
+
+# Ensure 'Date' column is in datetime format
+dataset_prices['Date'] = pd.to_datetime(dataset_prices['Date'])
+
+# Sort DataFrame by the 'Date' column in ascending order
+dataset_prices = dataset_prices.sort_values(by='Date')
+
+# Resetting index after sorting
+dataset_prices = dataset_prices.reset_index(drop=True)
+
+# Filling missing values by propagating last valid observation forward
+dataset_prices = dataset_prices.ffill(axis=1)
+
+# Setting 'Date' column as index
+dataset_prices.set_index('Date', inplace=True)
+
+# Calculate returns, volatility, and z-scores
+dataset_returns = calculate_returns(dataset_prices)
+dataset_volatility = calculate_volatility(dataset_prices, 4)  # window of 4 weeks chosen
+dataset_z_score = calculate_z_score(dataset_returns, dataset_volatility, dataset_prices)
+
+# DataFrame with Prices, Returns, and Volatilities (non-stationary)
+dataset_prices_returns = pd.concat([dataset_prices, dataset_returns], axis=1)
+dataset_prices_returns_volatility = pd.concat([dataset_prices_returns, dataset_volatility], axis=1)
+dataset_prices_returns_volatility = pd.DataFrame(dataset_prices_returns_volatility)
+
+# DataFrame with Returns and Normalized returns (stationary)
+dataset_returns_zscores = pd.concat([dataset_returns, dataset_z_score], axis=1)
+dataset_returns_zscores = pd.DataFrame(dataset_returns_zscores)
+
+# Extract features and labels
+features = dataset_prices_returns_volatility.drop(columns=['btc_Dernier Prix', 'btc_Dernier Prix_returns', 'btc_Dernier Prix_volatility'])
+labels = dataset_prices_returns_volatility['btc_Dernier Prix']
 
 # Debug: Print the columns of dataset_prices
 st.write("Columns in dataset_prices:", dataset_prices.columns.tolist())
@@ -37,9 +75,6 @@ if missing_columns:
 
 # Extract features and labels if the columns are present
 if not missing_columns:
-    features = dataset_prices.drop(columns=expected_columns)
-    labels = dataset_prices['btc_Dernier Prix']
-
     # Train Random Forest and get best hyperparameters
     best_params = train_random_forest(features, labels)
     rf_model = train_rf_model(features, labels, best_params)
@@ -66,7 +101,8 @@ if not missing_columns:
 
     st.header("Comparison of Predictions")
     fig_combined = make_subplots(rows=1, cols=1)
-    fig_combined.add_trace(go.Scatter(x=dataset_prices.index, y=dataset_prices['btc_Dernier Prix'], mode='lines', name='Actual Price'))
+    fig_combined.add_trace(go.Scatter(
+                           x=dataset_prices.index, y=dataset_prices['btc_Dernier Prix'], mode='lines', name='Actual Price'))
     fig_combined.add_trace(go.Scatter(x=rf_df['Date'], y=rf_df['Predicted Price'], mode='lines', name='RF Prediction'))
     # Add SARIMA and LSTM traces here
     fig_combined.update_layout(title='Model Predictions vs Actual Price', xaxis_title='Date', yaxis_title='Price')
@@ -79,3 +115,5 @@ if not missing_columns:
     """)
 else:
     st.error("Required columns are missing from dataset_prices. Please check the preprocessing steps.")
+
+
