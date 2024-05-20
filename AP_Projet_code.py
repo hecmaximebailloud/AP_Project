@@ -20,7 +20,7 @@ btc = load_data(btc_file)
 btc = preprocess_data(btc)
 
 all_data = load_all_data(tickers, file_paths)
-all_data = preprocess_all_data(all_data, pd.to_datetime('09/01/2011'))
+all_data = preprocess_all_data(all_data, pd.to_datetime('2011-01-09'))
 merged_df = merge_datasets([btc] + all_data)
 
 # Extracting columns containing dates and data
@@ -62,8 +62,7 @@ dataset_returns_zscores = pd.DataFrame(dataset_returns_zscores)
 
 # Extract features and labels
 features = dataset_prices_returns_volatility.drop(columns=['btc_Dernier Prix', 'btc_Dernier Prix_returns', 'btc_Dernier Prix_volatility'])
-labels = dataset_prices_returns_volatility['btc_Dernier Prix']
-st.write("labels:", labels)
+labels = dataset_prices_returns_volatility[['btc_Dernier Prix']]
 
 # Debug: Print the columns of dataset_prices
 st.write("Columns in dataset_prices:", dataset_prices.columns.tolist())
@@ -83,7 +82,7 @@ st.write("NaN values in labels:", labels.isna().sum().sum())
 st.write("Data types of features:")
 st.write(features.dtypes)
 st.write("Data type of labels:")
-st.write(labels.dtype)
+st.write(labels.dtypes)
 
 # Ensure there are no NaN values in features and labels
 features = features.fillna(0)
@@ -130,3 +129,4 @@ if not missing_columns and not features.isna().sum().sum() and not labels.isna()
     """)
 else:
     st.error("Required columns are missing from dataset_prices or NaN values are present in features/labels. Please check the preprocessing steps.")
+
