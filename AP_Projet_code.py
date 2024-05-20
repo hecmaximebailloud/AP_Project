@@ -129,4 +129,3 @@ if not missing_columns and not features.isna().sum().sum() and not labels.isna()
     """)
 else:
     st.error("Required columns are missing from dataset_prices or NaN values are present in features/labels. Please check the preprocessing steps.")
-
