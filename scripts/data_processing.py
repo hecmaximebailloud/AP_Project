@@ -18,7 +18,7 @@ def preprocess_data(btc):
 
     # Rename 'Dernier Prix' to 'btc_Dernier Prix'
     btc.rename(columns={'Dernier Prix': 'btc_Dernier Prix'}, inplace=True)
-    
+
     return btc
 
 def load_all_data(tickers, file_paths):
@@ -53,6 +53,8 @@ def calculate_returns(df):
 
     returns_df = pd.DataFrame(index=df.index)
     for col in numeric_cols:
+        print(f"Calculating returns for column: {col}")
+        print(df[col].head())
         returns_df[col + '_returns'] = (df[col] / df[col].shift(1) - 1).replace([np.inf, -np.inf, np.nan], 0)
 
     return returns_df
@@ -82,6 +84,3 @@ def calculate_z_score(returns_df, volatility_df, prices_df):
     z_score_df.fillna(0, inplace=True)
 
     return z_score_df
-
-
-
