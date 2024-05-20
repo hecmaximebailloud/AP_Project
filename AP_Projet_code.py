@@ -19,25 +19,31 @@ file_paths = [f'data/{ticker}.csv' for ticker in tickers]
 btc = load_data(btc_file)
 btc = preprocess_data(btc)
 
-all_data = [btc] + load_all_data(tickers, file_paths)
+all_data = load_all_data(tickers, file_paths)
 all_data = preprocess_all_data(all_data, pd.to_datetime('2011-09-01'))
-merged_df = merge_datasets(all_data)
+merged_df = merge_datasets([btc] + all_data)
 
-data_columns = merged_df.iloc[0:, 1::2]  # Selecting every feature column
-dates_columns = merged_df.iloc[0:, 0]  # Selecting one date column
+# Extracting columns containing dates and data
+data_columns = merged_df.iloc[:, 1:]  # Selecting all feature columns except the first date column
+dates_columns = merged_df.iloc[:, 0]  # Selecting the first date column
 
+# Creating a DataFrame with only dates and data columns
 dataset_prices = pd.concat([dates_columns, data_columns], axis=1)
 dataset_prices = pd.DataFrame(dataset_prices)
 
+# Ensure 'Date' column is in datetime format
 dataset_prices['Date'] = pd.to_datetime(dataset_prices['Date'])
 
+# Sort DataFrame by the 'Date' column in ascending order
 dataset_prices = dataset_prices.sort_values(by='Date')
 
+# Resetting index after sorting
 dataset_prices = dataset_prices.reset_index(drop=True)
 
+# Filling missing values by propagating last valid observation forward
 dataset_prices = dataset_prices.ffill(axis=1)
 
-dataset_prices['Date'] = pd.to_datetime(dataset_prices['Date'])
+# Setting 'Date' column as index
 dataset_prices.set_index('Date', inplace=True)
 
 # Calculate returns, volatility, and z-scores
@@ -54,6 +60,10 @@ dataset_prices_returns_volatility = pd.DataFrame(dataset_prices_returns_volatili
 dataset_returns_zscores = pd.concat([dataset_returns, dataset_z_score], axis=1)
 dataset_returns_zscores = pd.DataFrame(dataset_returns_zscores)
 
+# Extract features and labels
+features = dataset_prices_returns_volatility.drop(columns=['btc_Dernier Prix', 'btc_Dernier Prix_returns', 'btc_Dernier Prix_volatility'])
+labels = dataset_prices_returns_volatility['btc_Dernier Prix']
+
 # Debug: Print the columns of dataset_prices
 st.write("Columns in dataset_prices:", dataset_prices.columns.tolist())
 
@@ -66,9 +76,6 @@ if missing_columns:
 # Extract features and labels if the columns are present
 if not missing_columns:
     # Train Random Forest and get best hyperparameters
-    features = dataset_prices_returns_volatility.drop(columns=['btc_Dernier Prix', 'btc_Dernier Prix_returns', 'btc_Dernier Prix_volatility'])
-    labels = dataset_prices_returns_volatility['btc_Dernier Prix']
-
     best_params = train_random_forest(features, labels)
     rf_model = train_rf_model(features, labels, best_params)
     rf_predictions, rf_rmse, rf_mae = evaluate_model(rf_model, features, labels)
