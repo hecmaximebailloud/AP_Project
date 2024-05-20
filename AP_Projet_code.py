@@ -23,10 +23,10 @@ merged_df = merge_datasets(all_data)
 
 # Extract features and labels for Random Forest
 dataset_prices = merged_df.set_index('Date')
-features = dataset_prices.drop(columns=['btc_Dernier Prix', 'btc_Dernier Prix_returns', 'btc_Dernier Prix_volatility'])
+features = dataset_prices.drop(columns=['btc_Dernier Prix'])
 labels = dataset_prices['btc_Dernier Prix']
 
-# Train Random Forest and get best hyperparameters
+# Train Random Forest and get the best hyperparameters
 best_params = train_random_forest(features, labels)
 rf_model = train_rf_model(features, labels, best_params)
 rf_predictions, rf_rmse, rf_mae = evaluate_model(rf_model, features, labels)
