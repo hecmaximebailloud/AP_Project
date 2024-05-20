@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from scripts.data_processing import load_data, preprocess_data, load_all_data, preprocess_all_data, merge_datasets
 from scripts.model_training import train_random_forest, train_rf_model
-from scripts.model_evaluation import evaluate_model, made, rmse
+from scripts.model_evaluation import evaluate_model, mae, rmse
 
 # Load and preprocess data
 btc_file = 'data/btc.csv'
