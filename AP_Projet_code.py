@@ -60,10 +60,6 @@ dataset_prices_returns_volatility = pd.DataFrame(dataset_prices_returns_volatili
 dataset_returns_zscores = pd.concat([dataset_returns, dataset_z_score], axis=1)
 dataset_returns_zscores = pd.DataFrame(dataset_returns_zscores)
 
-# Extract features and labels
-features = dataset_prices_returns_volatility.drop(columns=['btc_Dernier Prix', 'btc_Dernier Prix_returns', 'btc_Dernier Prix_volatility'])
-labels = dataset_prices_returns_volatility['btc_Dernier Prix']
-
 # Debug: Print the columns of dataset_prices
 st.write("Columns in dataset_prices:", dataset_prices.columns.tolist())
 
@@ -76,6 +72,9 @@ if missing_columns:
 # Extract features and labels if the columns are present
 if not missing_columns:
     # Train Random Forest and get best hyperparameters
+    features = dataset_prices_returns_volatility.drop(columns=['btc_Dernier Prix', 'btc_Dernier Prix_returns', 'btc_Dernier Prix_volatility'])
+    labels = dataset_prices_returns_volatility['btc_Dernier Prix']
+
     best_params = train_random_forest(features, labels)
     rf_model = train_rf_model(features, labels, best_params)
     rf_predictions, rf_rmse, rf_mae = evaluate_model(rf_model, features, labels)
@@ -114,5 +113,3 @@ if not missing_columns:
     """)
 else:
     st.error("Required columns are missing from dataset_prices. Please check the preprocessing steps.")
-
-
