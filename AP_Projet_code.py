@@ -107,8 +107,13 @@ with tabs[6]:
     if selected_features:
         try:
             correlation_matrix = dataset_returns[selected_features].corr()
-            st.write("Correlation Matrix")
-            st.dataframe(correlation_matrix)
+            st.write("Correlation Heatmap")
+            import seaborn as sns
+            import matplotlib.pyplot as plt
+
+            fig, ax = plt.subplots(figsize=(10, 8))
+            sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', ax=ax)
+            st.pyplot(fig)
         except KeyError as e:
             st.error(f"Error selecting features for correlation: {e}")
 
