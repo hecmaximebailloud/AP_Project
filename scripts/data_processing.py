@@ -1,9 +1,10 @@
 import numpy as np
+
 import pandas as pd
 
 def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
     try:
-        df = pd.read_csv(f'data/{ticker}.csv')
+        df = pd.read_csv(f'/mnt/data/{ticker}.csv')
     except FileNotFoundError:
         raise FileNotFoundError(f"File for ticker '{ticker}' not found.")
     
@@ -50,9 +51,3 @@ def calculate_returns(df):
 def calculate_volatility(df, window=4):
     volatility_df = df.rolling(window=window).std().replace([np.inf, -np.inf], np.nan).fillna(0)
     return volatility_df.add_suffix('_volatility')
-
-
-def calculate_volatility(df, window=4):
-    volatility_df = df.rolling(window=window).std().replace([np.inf, -np.inf], np.nan).fillna(0)
-    return volatility_df.add_suffix('_volatility')
-
