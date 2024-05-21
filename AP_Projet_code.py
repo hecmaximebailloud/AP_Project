@@ -111,8 +111,8 @@ with tabs[6]:
             st.write("Customize Heatmap")
             cmap_option = st.selectbox('Select Color Map', ['coolwarm', 'viridis', 'plasma', 'inferno', 'magma', 'cividis'])
             annot_option = st.checkbox('Show Annotations', value=True)
-            figsize_width = st.slider('Figure Width', min_value=5, max_value=15, value=5)
-            figsize_height = st.slider('Figure Height', min_value=5, max_value=15, value=4)
+            figsize_width = st.slider('Figure Width', min_value=5, max_value=15, value=10)
+            figsize_height = st.slider('Figure Height', min_value=5, max_value=15, value=6)
             
             # Display heatmap
             st.write("Correlation Heatmap")
