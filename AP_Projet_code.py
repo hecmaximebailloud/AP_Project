@@ -105,3 +105,4 @@ if selected_model:
         st.line_chart(prediction_df.set_index('Date'))
     except KeyError as e:
         st.error(f"Error selecting prediction columns: {e}")
+
