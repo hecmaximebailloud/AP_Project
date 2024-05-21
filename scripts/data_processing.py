@@ -22,7 +22,7 @@ def preprocess_all_data(tickers, start_date, end_date, keep_columns):
     all_data = [btc]
 
     for ticker in tickers:
-        df = pd.read_excel(f'data/{ticker}.csv')
+        df = pd.read_csv(f'data/{ticker}.csv')
         df = df[keep_columns].copy()
         df['Date'] = pd.to_datetime(df['Date'])
         df = df[df['Date'].between(start_date, end_date)]
