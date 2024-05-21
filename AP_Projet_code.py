@@ -106,7 +106,7 @@ with tabs[6]:
     # Placeholder for news integration (could be an API call to a news service)
 
 # General Financial Markets News tab
-with tabs[6]:
+with tabs[7]:
     st.header('Latest Financial Markets News')
     st.write('Here are the latest news about the global financial world.')
     # Placeholder for news integration (could be an API call to a news service)
