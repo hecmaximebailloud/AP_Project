@@ -1,136 +1,92 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-from scripts.data_processing import load_data, preprocess_data, load_all_data, preprocess_all_data, merge_datasets, calculate_returns, calculate_volatility, calculate_z_score
-from scripts.model_training import train_random_forest, train_rf_model
-from scripts.model_evaluation import evaluate_model
+import numpy as np
+import joblib
+import os
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, LSTM, Dropout
+from statsmodels.tsa.statespace.sarimax import SARIMAX
 
-# Load and preprocess data
-btc_file = 'data/btc.csv'
-tickers = ['AMAZON', 'APPLE', 'google', 'TESLA', 'GOLD', 'CL1 COMB Comdty', 'NG1 COMB Comdty', 'CO1 COMB Comdty', 
-           'DowJones', 'Nasdaq', 'S&P', 'Cac40', 'ftse', 'NKY', 'EURR002W', 'DEYC2Y10', 'USYC2Y10', 'JPYC2Y10', 
-           'TED SPREAD JPN', 'TED SPREAD US', 'TED SPREAD EUR', 'renminbiusd', 'yenusd', 'eurodollar', 'gbpusd', 
-           'active_address_count', 'addr_cnt_bal_sup_10K', 'addr_cnt_bal_sup_100K', 'miner-revenue-native-unit', 
-           'miner-revenue-USD', 'mvrv', 'nvt', 'tx-fees-btc', 'tx-fees-usd']
-file_paths = [f'data/{ticker}.csv' for ticker in tickers]
+# Import preprocessing functions
+from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility
 
-btc = load_data(btc_file)
-btc = preprocess_data(btc)
+# Define start and end dates for the weekly data
+start_date = pd.to_datetime('09/01/2011')
+end_date = pd.to_datetime('24/12/2023')
+keep_columns = ['Date', 'Dernier Prix']
 
-all_data = load_all_data(tickers, file_paths)
-all_data = preprocess_all_data(all_data, pd.to_datetime('09/01/2011'))
-merged_df = merge_datasets([btc] + all_data)
+# List of all tickers
+all_data_ticker = ['btc', 'AMAZON', 'APPLE', 'google', 'TESLA',
+                 'GOLD', 'CL1 COMB Comdty', 'NG1 COMB Comdty', 'CO1 COMB Comdty', 
+                 'DowJones', 'Nasdaq', 'S&P', 'Cac40', 'ftse', 'NKY',
+                 'EURR002W', 'DEYC2Y10', 'USYC2Y10', 'JPYC2Y10', 'TED SPREAD JPN', 'TED SPREAD US', 'TED SPREAD EUR',
+                 'renminbiusd', 'yenusd', 'eurodollar' ,'gbpusd',
+                 'active_address_count', 'addr_cnt_bal_sup_10K', 'addr_cnt_bal_sup_100K' , 'miner-revenue-native-unit','miner-revenue-USD','mvrv','nvt','tx-fees-btc', 'tx-fees-usd']
 
-# Extracting columns containing dates and data
-data_columns = merged_df.iloc[0:, 1:]  # Selecting all feature columns except the first date column
-dates_columns = merged_df.iloc[0:, 0]  # Selecting the first date column
+# Preprocess data
+merged_df = preprocess_all_data(all_data_ticker, start_date, end_date, keep_columns)
 
-# Creating a DataFrame with only dates and data columns
-dataset_prices = pd.concat([dates_columns, data_columns], axis=1)
-dataset_prices = pd.DataFrame(dataset_prices)
+# Calculate returns and volatilities
+dataset_returns = calculate_returns(merged_df)
+dataset_volatility = calculate_volatility(merged_df)
 
-# Ensure 'Date' column is in datetime format
-dataset_prices['Date'] = pd.to_datetime(dataset_prices['Date'])
+# Streamlit interface
+st.title('Bitcoin Price Prediction and Analysis')
 
-# Sort DataFrame by the 'Date' column in ascending order
-dataset_prices = dataset_prices.sort_values(by='Date')
+# Sidebar for feature selection
+features = merged_df.columns.tolist()
+selected_features = st.sidebar.multiselect('Select Features', features)
 
-# Filter data to only include weekly periods
-dataset_prices = dataset_prices[dataset_prices['Date'].dt.dayofweek == 0]
+# Display selected features returns and volatility
+if selected_features:
+    st.header('Returns')
+    returns = dataset_returns[selected_features]
+    st.line_chart(returns)
 
-# Resetting index after sorting
-dataset_prices = dataset_prices.reset_index(drop=True)
-
-# Filling missing values by propagating last valid observation forward
-dataset_prices = dataset_prices.ffill(axis=1)
-
-# Setting 'Date' column as index
-dataset_prices.set_index('Date', inplace=True)
-
-# Calculate returns, volatility, and z-scores
-dataset_returns = calculate_returns(dataset_prices)
-dataset_volatility = calculate_volatility(dataset_prices, 4)  # window of 4 weeks chosen
-dataset_z_score = calculate_z_score(dataset_returns, dataset_volatility, dataset_prices)
-
-# DataFrame with Prices, Returns, and Volatilities (non-stationary)
-dataset_prices_returns = pd.concat([dataset_prices, dataset_returns], axis=1)
-dataset_prices_returns_volatility = pd.concat([dataset_prices_returns, dataset_volatility], axis=1)
-dataset_prices_returns_volatility = pd.DataFrame(dataset_prices_returns_volatility)
-
-# DataFrame with Returns and Normalized returns (stationary)
-dataset_returns_zscores = pd.concat([dataset_returns, dataset_z_score], axis=1)
-dataset_returns_zscores = pd.DataFrame(dataset_returns_zscores)
-
-# Extract features and labels
-features = dataset_prices_returns_volatility.drop(columns=['btc_Dernier Prix', 'btc_Dernier Prix_returns', 'btc_Dernier Prix_volatility'])
-labels = dataset_prices_returns_volatility[['btc_Dernier Prix']]
-
-# Debug: Print the columns of dataset_prices
-st.write("Columns in dataset_prices:", dataset_prices.columns.tolist())
-
-# Check if the expected columns are present
-expected_columns = ['btc_Dernier Prix', 'btc_Dernier Prix_returns', 'btc_Dernier Prix_volatility']
-missing_columns = [col for col in expected_columns if col not in dataset_prices.columns]
-if missing_columns:
-    st.write(f"Missing columns in dataset_prices: {missing_columns}")
-
-# Debug: Check for NaN values in features and labels
-st.write("Checking for NaN values in features and labels...")
-st.write("NaN values in features:", features.isna().sum().sum())
-st.write("NaN values in labels:", labels.isna().sum().sum())
-
-# Debug: Check data types of features and labels
-st.write("Data types of features:")
-st.write(features.dtypes)
-st.write("Data type of labels:")
-st.write(labels.dtypes)
-
-# Ensure there are no NaN values in features and labels
-features = features.fillna(0)
-labels = labels.fillna(0)
-
-# Extract features and labels if the columns are present and there are no NaN values
-if not missing_columns and not features.isna().sum().sum() and not labels.isna().sum().sum():
-    # Train Random Forest and get best hyperparameters
-    best_params = train_random_forest(features, labels)
-    rf_model = train_rf_model(features, labels, best_params)
-    rf_predictions, rf_rmse, rf_mae = evaluate_model(rf_model, features, labels)
-
-    # Display results on Streamlit
-    st.title("Bitcoin Price Predictions and Forecasts")
-    st.markdown("""
-    This app displays Bitcoin price predictions using different machine learning models (Random Forest, SARIMA, LSTM) and concludes with an investment strategy.
-    """)
-
-    st.header("Data Overview")
-    st.write("Bitcoin Price Data")
-    st.write(btc.head())
-
-    st.header("Model Predictions")
-
-    st.subheader("Random Forest Predictions")
-    rf_df = pd.DataFrame({'Date': dataset_prices.index, 'Predicted Price': rf_predictions})
-    fig_rf = px.line(rf_df, x='Date', y='Predicted Price', title='Random Forest Predictions')
-    st.plotly_chart(fig_rf)
-
-    # Add similar sections for SARIMA and LSTM predictions
-
-    st.header("Comparison of Predictions")
-    fig_combined = make_subplots(rows=1, cols=1)
-    fig_combined.add_trace(go.Scatter(x=dataset_prices.index, y=dataset_prices['btc_Dernier Prix'], mode='lines', name='Actual Price'))
-    fig_combined.add_trace(go.Scatter(x=rf_df['Date'], y=rf_df['Predicted Price'], mode='lines', name='RF Prediction'))
-    # Add SARIMA and LSTM traces here
-    fig_combined.update_layout(title='Model Predictions vs Actual Price', xaxis_title='Date', yaxis_title='Price')
-    st.plotly_chart(fig_combined)
-
-    st.header("Investment Strategy")
-    st.markdown("""
-    The Moving Average Crossover Strategy based on the SARIMA and Random Forest models analyzes the crossover points of short-term and long-term moving averages to make investment decisions. 
-    This strategy demonstrates the practical application of the model predictions.
-    """)
+    st.header('Volatility')
+    volatility = dataset_volatility[[f"{feature}_volatility" for feature in selected_features]]
+    st.line_chart(volatility)
 else:
-    st.error("Required columns are missing from dataset_prices or NaN values are present in features/labels. Please check the preprocessing steps.")
+    st.write("Please select at least one feature to display.")
+
+# Placeholder for model predictions
+def load_model_predictions(model_name, data):
+    # Placeholder model logic (replace with actual model predictions)
+    if model_name == 'Random Forest':
+        # Load the model
+        model = joblib.load('scripts/random_forest_model.pkl')
+        predictions = model.predict(data)
+    elif model_name == 'SARIMA':
+        # Example for SARIMA (replace with actual implementation)
+        model = SARIMAX(data['btc_Dernier Prix'], order=(1, 1, 1), seasonal_order=(1, 1, 1, 12))
+        results = model.fit()
+        predictions = results.predict(start=len(data), end=len(data) + 50)
+    elif model_name == 'LSTM':
+        # Example for LSTM (replace with actual implementation)
+        model = Sequential()
+        model.add(LSTM(units=50, return_sequences=True, input_shape=(data.shape[1], 1)))
+        model.add(Dropout(0.2))
+        model.add(LSTM(units=50, return_sequences=False))
+        model.add(Dropout(0.2))
+        model.add(Dense(1))
+        model.compile(optimizer='adam', loss='mean_squared_error')
+        # Assume data is already preprocessed and split
+        predictions = model.predict(data)
+    else:
+        predictions = np.random.randn(len(data))
+    return predictions
+
+# Select model for prediction
+model_options = ['Random Forest', 'SARIMA', 'LSTM']
+selected_model = st.sidebar.selectbox('Select Model', model_options)
+
+if selected_model:
+    st.header(f'BTC Price Predictions using {selected_model}')
+    # Assume 'features' variable contains the feature columns for prediction
+    features_for_prediction = merged_df[selected_features]
+    predictions = load_model_predictions(selected_model, features_for_prediction)
+    prediction_df = pd.DataFrame({'Date': merged_df.index, 'Predicted_Price': predictions})
+    st.line_chart(prediction_df.set_index('Date'))
+
 
 
