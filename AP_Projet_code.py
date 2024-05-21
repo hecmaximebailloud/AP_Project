@@ -32,47 +32,53 @@ dataset_volatility = calculate_volatility(merged_df)
 # Streamlit interface
 st.title('Data Analysis and Visualization')
 
-# Sidebar for feature selection
-st.sidebar.header('Feature Selection')
-features = merged_df.columns.tolist()
-selected_features = st.sidebar.multiselect('Select Features', features)
+# Topbar for navigation
+tabs = st.selectbox('Select Tab', ['Price', 'Returns', 'Volatility', 'Images'])
 
-if selected_features:
-    st.header('Price')
-    selected_price = [f"{feature}" for feature in selected_features]
-    try:
-        price = merged_df[selected_price]
-        st.line_chart(price)
-    except KeyError as e:
-        st.error(f"Error selecting price columns: {e}")
+# Feature selection for data tabs
+if tabs in ['Price', 'Returns', 'Volatility']:
+    st.header(f'{tabs}')
+    features = merged_df.columns.tolist()
+    selected_features = st.multiselect('Select Features', features)
 
-    st.header('Returns')
-    selected_returns = [f"{feature}_returns" for feature in selected_features]
-    try:
-        returns = dataset_returns[selected_returns]
-        st.line_chart(returns)
-    except KeyError as e:
-        st.error(f"Error selecting returns columns: {e}")
+    if selected_features:
+        if tabs == 'Price':
+            try:
+                selected_price = [f"{feature}" for feature in selected_features]
+                price = merged_df[selected_price]
+                st.line_chart(price)
+            except KeyError as e:
+                st.error(f"Error selecting price columns: {e}")
+        
+        elif tabs == 'Returns':
+            try:
+                selected_returns = [f"{feature}_returns" for feature in selected_features]
+                returns = dataset_returns[selected_returns]
+                st.line_chart(returns)
+            except KeyError as e:
+                st.error(f"Error selecting returns columns: {e}")
+        
+        elif tabs == 'Volatility':
+            try:
+                selected_volatility = [f"{feature}_volatility" for feature in selected_features]
+                volatility = dataset_volatility[selected_volatility]
+                st.line_chart(volatility)
+            except KeyError as e:
+                st.error(f"Error selecting volatility columns: {e}")
+    else:
+        st.write("Please select at least one feature to display.")
 
-    st.header('Volatility')
-    selected_volatility = [f"{feature}_volatility" for feature in selected_features]
-    try:
-        volatility = dataset_volatility[selected_volatility]
-        st.line_chart(volatility)
-    except KeyError as e:
-        st.error(f"Error selecting volatility columns: {e}")
-else:
-    st.write("Please select at least one feature to display.")
+# Image display tab
+if tabs == 'Images':
+    st.header('Images')
+    image_dir = 'path/to/your/images'  # Change to your image directory
+    images = [f for f in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, f))]
+    selected_image = st.selectbox('Select an Image', images)
 
-# Picture display section
-st.sidebar.header('Picture Selection')
-image_dir = 'path/to/your/images'  # Change to your image directory
-images = [f for f in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, f))]
-selected_image = st.sidebar.selectbox('Select an Image', images)
+    if selected_image:
+        image_path = os.path.join(image_dir, selected_image)
+        st.image(image_path, caption=selected_image)
 
-if selected_image:
-    image_path = os.path.join(image_dir, selected_image)
-    st.image(image_path, caption=selected_image)
 
 
 
