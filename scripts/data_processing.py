@@ -1,10 +1,9 @@
 import numpy as np
-
 import pandas as pd
 
 def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
     try:
-        df = pd.read_csv(f'data/{ticker}.csv')
+        df = pd.read_csv(f'/mnt/data/{ticker}.csv')
     except FileNotFoundError:
         raise FileNotFoundError(f"File for ticker '{ticker}' not found.")
     
@@ -25,6 +24,7 @@ def preprocess_all_data(tickers, start_date, end_date, keep_columns):
     for ticker in tickers:
         df = load_and_preprocess_data(ticker, start_date, end_date, keep_columns)
         df.columns = [f"{ticker}_{col}" if col != "Date" else "Date" for col in df.columns]
+        print(f"{ticker}: {df['Date'].min()} to {df['Date'].max()}")  # Debug: Print date range for each ticker
         all_data.append(df)
 
     # Find common dates among all datasets
@@ -41,6 +41,7 @@ def preprocess_all_data(tickers, start_date, end_date, keep_columns):
     merged_df = merged_df.loc[:, ~merged_df.columns.duplicated()]  # Remove duplicate columns
     merged_df['Date'] = pd.to_datetime(merged_df['Date'])
     merged_df.set_index('Date', inplace=True)
+    print(f"Merged data: {merged_df.index.min()} to {merged_df.index.max()}")  # Debug: Print date range for merged data
     
     return merged_df
 
@@ -51,3 +52,4 @@ def calculate_returns(df):
 def calculate_volatility(df, window=4):
     volatility_df = df.rolling(window=window).std().replace([np.inf, -np.inf], np.nan).fillna(0)
     return volatility_df.add_suffix('_volatility')
+
