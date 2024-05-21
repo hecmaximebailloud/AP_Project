@@ -107,12 +107,19 @@ with tabs[6]:
     if selected_features:
         try:
             correlation_matrix = dataset_returns[selected_features].corr()
+            st.write("Customize Heatmap")
+            cmap_option = st.selectbox('Select Color Map', ['coolwarm', 'viridis', 'plasma', 'inferno', 'magma', 'cividis'])
+            annot_option = st.checkbox('Show Annotations', value=True)
+            figsize_width = st.slider('Figure Width', min_value=5, max_value=15, value=10)
+            figsize_height = st.slider('Figure Height', min_value=5, max_value=15, value=8)
+            
+            # Display heatmap
             st.write("Correlation Heatmap")
             import seaborn as sns
             import matplotlib.pyplot as plt
 
-            fig, ax = plt.subplots(figsize=(10, 8))
-            sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', ax=ax)
+            fig, ax = plt.subplots(figsize=(figsize_width, figsize_height))
+            sns.heatmap(correlation_matrix, annot=annot_option, cmap=cmap_option, ax=ax)
             st.pyplot(fig)
         except KeyError as e:
             st.error(f"Error selecting features for correlation: {e}")
