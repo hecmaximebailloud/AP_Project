@@ -44,7 +44,7 @@ st.title('Bitcoin Price Prediction and Analysis')
 features = merged_df.columns.tolist()
 selected_features = st.sidebar.multiselect('Select Features', features)
 
-st.write(f"features price: {features[btc_Dernier Prix]}")
+st.write(f"features price: {features}")
 # Display selected features returns and volatility
 if selected_features:
     st.header('Returns')
