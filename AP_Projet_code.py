@@ -95,14 +95,22 @@ with tabs[5]:
     st.header('Investment Strategy')
     strategy_choice = st.selectbox('Select Strategy', ['Predicted Bitcoin Prices', 'Actual Bitcoin Prices'], key='strategy_choice')
     if strategy_choice == 'Predicted Bitcoin Prices':
-        st.write('Investment strategy based on predicted Bitcoin prices...')
+        st.write('Investment strategy based on predicted Bitcoin prices using Recursive Features Elimination')
     elif strategy_choice == 'Actual Bitcoin Prices':
         st.write('Investment strategy based on actual Bitcoin prices...')
 
-# News tab
+# Bitcoin News tab
 with tabs[6]:
     st.header('Latest Bitcoin News')
-    st.write('Here you can display the latest news about Bitcoin...')
+    st.write('Here are the latest news about Bitcoin and cryptocurrencies in general')
     # Placeholder for news integration (could be an API call to a news service)
+
+# General Financial Markets News tab
+with tabs[6]:
+    st.header('Latest Financial Markets News')
+    st.write('Here are the latest news about the global financial world.')
+    # Placeholder for news integration (could be an API call to a news service)
+
+
 
 
