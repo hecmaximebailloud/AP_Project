@@ -1,7 +1,6 @@
-import numpy as np
 # scripts/data_processing.py
-
 import pandas as pd
+import numpy as np
 
 def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
     try:
@@ -17,9 +16,7 @@ def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
     except Exception as e:
         raise ValueError(f"Error converting 'Date' column to datetime for ticker '{ticker}': {e}")
     
-    print(f"Before filtering: {ticker}: {df['Date'].min()} to {df['Date'].max()}")
     df = df[df['Date'].between(start_date, end_date)]
-    print(f"After filtering: {ticker}: {df['Date'].min()} to {df['Date'].max()}")
     df = df[keep_columns].copy()
     return df
 
@@ -28,24 +25,19 @@ def preprocess_all_data(tickers, start_date, end_date, keep_columns):
     for ticker in tickers:
         df = load_and_preprocess_data(ticker, start_date, end_date, keep_columns)
         df.columns = [f"{ticker}_{col}" if col != "Date" else "Date" for col in df.columns]
-        print(f"{ticker}: {df['Date'].min()} to {df['Date'].max()}")  # Debug: Print date range for each ticker
         all_data.append(df)
 
-    # Find common dates among all datasets
     common_dates_all = set(all_data[0]['Date'])
     for df in all_data[1:]:
         common_dates_all.intersection_update(set(df['Date']))
 
-    # Filter each dataset to include only common dates
     for i, df in enumerate(all_data):
         all_data[i] = df[df['Date'].isin(common_dates_all)].copy()
         
-    # Merge all datasets into a single DataFrame
     merged_df = pd.concat(all_data, axis=1)
-    merged_df = merged_df.loc[:, ~merged_df.columns.duplicated()]  # Remove duplicate columns
+    merged_df = merged_df.loc[:, ~merged_df.columns.duplicated()]
     merged_df['Date'] = pd.to_datetime(merged_df['Date'])
     merged_df.set_index('Date', inplace=True)
-    print(f"Merged data: {merged_df.index.min()} to {merged_df.index.max()}")  # Debug: Print date range for merged data
     
     return merged_df
 
@@ -56,4 +48,5 @@ def calculate_returns(df):
 def calculate_volatility(df, window=4):
     volatility_df = df.rolling(window=window).std().replace([np.inf, -np.inf], np.nan).fillna(0)
     return volatility_df.add_suffix('_volatility')
+
 
