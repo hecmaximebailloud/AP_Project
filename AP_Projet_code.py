@@ -21,7 +21,7 @@ all_data_ticker = ['btc', 'AMAZON', 'APPLE', 'google', 'TESLA',
                  'DowJones', 'Nasdaq', 'S&P', 'Cac40', 'ftse', 'NKY',
                  'EURR002W', 'DEYC2Y10', 'USYC2Y10', 'JPYC2Y10', 'TED SPREAD JPN', 'TED SPREAD US', 'TED SPREAD EUR',
                  'renminbiusd', 'yenusd', 'eurodollar' ,'gbpusd',
-                 'active_address_count', 'addr_cnt_bal_sup_10K', 'addr_cnt_bal_sup_100K' , 'miner-revenue-native-unit','miner-revenue-USD','mvrv','nvt','tx-fees-btc', 'tx-fees-usd']
+                 'active_address_count', 'addr_cnt_bal_sup_10K', 'addr_cnt_bal_sup_100K', 'miner-revenue-native-unit', 'miner-revenue-USD','mvrv','nvt','tx-fees-btc', 'tx-fees-usd']
 
 # Preprocess data
 try:
@@ -43,6 +43,15 @@ st.title('Bitcoin Price Prediction and Analysis')
 # Sidebar for feature selection
 features = merged_df.columns.tolist()
 selected_features = st.sidebar.multiselect('Select Features', features)
+
+if selected_features:
+    st.header('Price')
+    selected_price = [f"{feature}" for feature in selected_features]
+    try:
+        price = dataset_price[selected_price]
+        st.line_chart(price)
+    except KeyError as e:
+        st.error(f"Error selecting price columns: {e}")
 
 st.write(f"features price: {features}")
 # Display selected features returns and volatility
