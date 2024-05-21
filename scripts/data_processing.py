@@ -3,7 +3,7 @@ import pandas as pd
 
 def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
     try:
-        df = pd.read_csv(f'data/{ticker}.csv')
+        df = pd.read_csv(f'/mnt/data/{ticker}.csv')
     except FileNotFoundError:
         raise FileNotFoundError(f"File for ticker '{ticker}' not found.")
     
@@ -11,7 +11,7 @@ def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
         raise ValueError(f"'Date' column not found in the dataset for ticker '{ticker}'.")
 
     try:
-        df['Date'] = pd.to_datetime(df['Date'])
+        df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y', dayfirst=True)
     except Exception as e:
         raise ValueError(f"Error converting 'Date' column to datetime for ticker '{ticker}': {e}")
     
@@ -46,6 +46,11 @@ def preprocess_all_data(tickers, start_date, end_date, keep_columns):
 def calculate_returns(df):
     returns_df = df.pct_change().replace([np.inf, -np.inf], np.nan).fillna(0)
     return returns_df.add_suffix('_returns')
+
+def calculate_volatility(df, window=4):
+    volatility_df = df.rolling(window=window).std().replace([np.inf, -np.inf], np.nan).fillna(0)
+    return volatility_df.add_suffix('_volatility')
+
 
 def calculate_volatility(df, window=4):
     volatility_df = df.rolling(window=window).std().replace([np.inf, -np.inf], np.nan).fillna(0)
