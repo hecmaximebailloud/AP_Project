@@ -1,4 +1,6 @@
 import numpy as np
+# scripts/data_processing.py
+
 import pandas as pd
 
 def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
@@ -15,7 +17,9 @@ def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
     except Exception as e:
         raise ValueError(f"Error converting 'Date' column to datetime for ticker '{ticker}': {e}")
     
+    print(f"Before filtering: {ticker}: {df['Date'].min()} to {df['Date'].max()}")
     df = df[df['Date'].between(start_date, end_date)]
+    print(f"After filtering: {ticker}: {df['Date'].min()} to {df['Date'].max()}")
     df = df[keep_columns].copy()
     return df
 
