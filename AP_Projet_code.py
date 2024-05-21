@@ -106,3 +106,4 @@ if selected_model:
     except KeyError as e:
         st.error(f"Error selecting prediction columns: {e}")
 
+
