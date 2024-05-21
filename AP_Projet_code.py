@@ -11,8 +11,8 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility, load_and_preprocess_data
 
 # Define start and end dates for the weekly data
-start_date = pd.to_datetime('2011-09-01')
-end_date = pd.to_datetime('2023-12-24')
+start_date = pd.to_datetime('09-01-2011')
+end_date = pd.to_datetime('24-12-2024')
 keep_columns = ['Date', 'Dernier Prix']
 
 # List of all tickers
