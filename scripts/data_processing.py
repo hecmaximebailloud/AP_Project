@@ -2,8 +2,19 @@ import numpy as np
 import pandas as pd
 
 def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
-    df = pd.read_csv(f'data/{ticker}.csv')
-    df['Date'] = pd.to_datetime(df['Date'])
+    try:
+        df = pd.read_csv(f'/mnt/data/{ticker}.csv')
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File for ticker '{ticker}' not found.")
+    
+    if 'Date' not in df.columns:
+        raise ValueError(f"'Date' column not found in the dataset for ticker '{ticker}'.")
+
+    try:
+        df['Date'] = pd.to_datetime(df['Date'])
+    except Exception as e:
+        raise ValueError(f"Error converting 'Date' column to datetime for ticker '{ticker}': {e}")
+    
     df = df[df['Date'].between(start_date, end_date)]
     df = df[keep_columns].copy()
     return df
@@ -39,3 +50,4 @@ def calculate_returns(df):
 def calculate_volatility(df, window=4):
     volatility_df = df.rolling(window=window).std().replace([np.inf, -np.inf], np.nan).fillna(0)
     return volatility_df.add_suffix('_volatility')
+
