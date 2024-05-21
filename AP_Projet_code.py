@@ -53,7 +53,6 @@ if selected_features:
     except KeyError as e:
         st.error(f"Error selecting price columns: {e}")
 
-st.write(f"features price: {features}")
 # Display selected features returns and volatility
 if selected_features:
     st.header('Returns')
