@@ -20,12 +20,12 @@ btc = load_data(btc_file)
 btc = preprocess_data(btc)
 
 all_data = load_all_data(tickers, file_paths)
-all_data = preprocess_all_data(all_data, pd.to_datetime('2011-01-09'))
+all_data = preprocess_all_data(all_data, pd.to_datetime('09/01/2011'))
 merged_df = merge_datasets([btc] + all_data)
 
 # Extracting columns containing dates and data
-data_columns = merged_df.iloc[:, 1:]  # Selecting all feature columns except the first date column
-dates_columns = merged_df.iloc[:, 0]  # Selecting the first date column
+data_columns = merged_df.iloc[0:, 1:]  # Selecting all feature columns except the first date column
+dates_columns = merged_df.iloc[0:, 0]  # Selecting the first date column
 
 # Creating a DataFrame with only dates and data columns
 dataset_prices = pd.concat([dates_columns, data_columns], axis=1)
@@ -36,6 +36,9 @@ dataset_prices['Date'] = pd.to_datetime(dataset_prices['Date'])
 
 # Sort DataFrame by the 'Date' column in ascending order
 dataset_prices = dataset_prices.sort_values(by='Date')
+
+# Filter data to only include weekly periods
+dataset_prices = dataset_prices[dataset_prices['Date'].dt.dayofweek == 0]
 
 # Resetting index after sorting
 dataset_prices = dataset_prices.reset_index(drop=True)
@@ -129,4 +132,5 @@ if not missing_columns and not features.isna().sum().sum() and not labels.isna()
     """)
 else:
     st.error("Required columns are missing from dataset_prices or NaN values are present in features/labels. Please check the preprocessing steps.")
+
 
