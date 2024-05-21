@@ -3,7 +3,7 @@ import pandas as pd
 
 def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
     try:
-        df = pd.read_csv(f'/mnt/data/{ticker}.csv')
+        df = pd.read_csv(f'/data/{ticker}.csv')
     except FileNotFoundError:
         raise FileNotFoundError(f"File for ticker '{ticker}' not found.")
     
