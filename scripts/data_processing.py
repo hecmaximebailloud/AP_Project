@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
-    df = pd.read_csv(f'/mnt/data/{ticker}.csv')
+    df = pd.read_csv(f'data/{ticker}.csv')
     df['Date'] = pd.to_datetime(df['Date'])
     df = df[df['Date'].between(start_date, end_date)]
     df = df[keep_columns].copy()
