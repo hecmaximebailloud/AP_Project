@@ -30,6 +30,9 @@ except Exception as e:
     st.error(f"Error during preprocessing: {e}")
     st.stop()
 
+# Debug: Check the date range in merged_df
+st.write(f"Data date range: {merged_df.index.min()} to {merged_df.index.max()}")
+
 # Calculate returns and volatilities
 dataset_returns = calculate_returns(merged_df)
 dataset_volatility = calculate_volatility(merged_df)
@@ -102,7 +105,3 @@ if selected_model:
         st.line_chart(prediction_df.set_index('Date'))
     except KeyError as e:
         st.error(f"Error selecting prediction columns: {e}")
-
-
-
-
