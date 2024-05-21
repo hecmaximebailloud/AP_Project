@@ -24,13 +24,13 @@ def preprocess_all_data(tickers, start_date, end_date, keep_columns):
     for ticker in tickers:
         df = pd.read_csv(f'data/{ticker}.csv')
         df = df[keep_columns].copy()
-        df['Date'] = pd.to_datetime(df['Date'])
+        df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y', dayfirst=True)
         df = df[df['Date'].between(start_date, end_date)]
         all_data.append(df)
 
     common_dates_all = set(btc['Date'])
     for i, df in enumerate(all_data):
-        common_dates_all &= set(df['Date'])
+        common_dates_all = set(df['Date'])
 
     all_dates = pd.DataFrame({'Date': sorted(common_dates_all)})
     all_datasets_filled = [btc]
