@@ -8,7 +8,7 @@ from tensorflow.keras.layers import Dense, LSTM, Dropout
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 # Import preprocessing functions
-from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility
+from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility, load_and_preprocess_data
 
 # Define start and end dates for the weekly data
 start_date = pd.to_datetime('2011-09-01')
