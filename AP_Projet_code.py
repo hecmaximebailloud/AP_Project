@@ -11,12 +11,12 @@ end_date = pd.to_datetime('2023-12-24')
 keep_columns = ['Date', 'Dernier Prix']
 
 # List of all tickers
-all_data_ticker = ['btc', 'AMAZON', 'APPLE', 'google', 'TESLA',
+all_data_ticker = ['AMAZON', 'APPLE', 'google', 'TESLA',
                  'GOLD', 'CL1 COMB Comdty', 'NG1 COMB Comdty', 'CO1 COMB Comdty', 
                  'DowJones', 'Nasdaq', 'S&P', 'Cac40', 'ftse', 'NKY',
                  'EURR002W', 'DEYC2Y10', 'USYC2Y10', 'JPYC2Y10', 'TED SPREAD JPN', 'TED SPREAD US', 'TED SPREAD EUR',
                  'renminbiusd', 'yenusd', 'eurodollar' ,'gbpusd',
-                 'active_address_count', 'addr_cnt_bal_sup_10K', 'addr_cnt_bal_sup_100K', 'miner-revenue-native-unit', 'miner-revenue-USD','mvrv','nvt','tx-fees-btc', 'tx-fees-usd']
+                 'active_address_count', 'addr_cnt_bal_sup_10K', 'addr_cnt_bal_sup_100K', 'miner-revenue-native-unit', 'miner-revenue-USD', 'mvrv', 'nvt', 'tx-fees-btc', 'tx-fees-usd']
 
 # Preprocess data
 try:
@@ -78,8 +78,3 @@ if tabs == 'Images':
     if selected_image:
         image_path = os.path.join(image_dir, selected_image)
         st.image(image_path, caption=selected_image)
-
-
-
-
-
