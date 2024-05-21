@@ -8,7 +8,7 @@ from tensorflow.keras.layers import Dense, LSTM, Dropout
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 # Import preprocessing functions
-from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility
+from scripts.data_processing import load_and_preprocess_data, preprocess_all_data, calculate_returns, calculate_volatility
 
 # Define start and end dates for the weekly data
 start_date = pd.to_datetime('09/01/2011')
@@ -21,7 +21,7 @@ all_data_ticker = ['btc', 'AMAZON', 'APPLE', 'google', 'TESLA',
                  'DowJones', 'Nasdaq', 'S&P', 'Cac40', 'ftse', 'NKY',
                  'EURR002W', 'DEYC2Y10', 'USYC2Y10', 'JPYC2Y10', 'TED SPREAD JPN', 'TED SPREAD US', 'TED SPREAD EUR',
                  'renminbiusd', 'yenusd', 'eurodollar' ,'gbpusd',
-                 'active_address_count', 'addr_cnt_bal_sup_10K', 'addr_cnt_bal_sup_100K' , 'miner-revenue-native-unit','miner-revenue-USD','mvrv','nvt','tx-fees-btc', 'tx-fees-usd']
+                 'active_address_count', 'addr_cnt_bal_sup_10K', 'addr_cnt_bal_sup_100K', 'miner-revenue-native-unit', 'miner-revenue-USD', 'mvrv', 'nvt', 'tx-fees-btc', 'tx-fees-usd']
 
 # Preprocess data
 merged_df = preprocess_all_data(all_data_ticker, start_date, end_date, keep_columns)
