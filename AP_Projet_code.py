@@ -12,7 +12,7 @@ keep_columns = ['Date', 'Dernier Prix']
 
 # List of all tickers
 all_data_ticker = ['AMAZON', 'APPLE', 'google', 'TESLA',
-                 'GOLD', 'CL1 COMB Comdty', 'NG1 COMB Comdty', 'CO1 COMB Comdty', 
+                 'GOLD', 'CL1 COMdty', 'NG1 COMdty', 'CO1 COMdty', 
                  'DowJones', 'Nasdaq', 'S&P', 'Cac40', 'ftse', 'NKY',
                  'EURR002W', 'DEYC2Y10', 'USYC2Y10', 'JPYC2Y10', 'TED SPREAD JPN', 'TED SPREAD US', 'TED SPREAD EUR',
                  'renminbiusd', 'yenusd', 'eurodollar' ,'gbpusd',
@@ -46,7 +46,7 @@ with tabs[0]:
 with tabs[1]:
     st.header('Price')
     features = merged_df.columns.tolist()
-    selected_features = st.multiselect('Select Features', features)
+    selected_features = st.multiselect('Select Features', features, key='price_features')
     if selected_features:
         try:
             selected_price = [f"{feature}" for feature in selected_features]
@@ -58,8 +58,7 @@ with tabs[1]:
 # Returns tab
 with tabs[2]:
     st.header('Returns')
-    features = merged_df.columns.tolist()
-    selected_features = st.multiselect('Select Features', features)
+    selected_features = st.multiselect('Select Features', merged_df.columns.tolist(), key='returns_features')
     if selected_features:
         try:
             selected_returns = [f"{feature}_returns" for feature in selected_features]
@@ -71,8 +70,7 @@ with tabs[2]:
 # Volatility tab
 with tabs[3]:
     st.header('Volatility')
-    features = merged_df.columns.tolist()
-    selected_features = st.multiselect('Select Features', features)
+    selected_features = st.multiselect('Select Features', merged_df.columns.tolist(), key='volatility_features')
     if selected_features:
         try:
             selected_volatility = [f"{feature}_volatility" for feature in selected_features]
@@ -84,7 +82,7 @@ with tabs[3]:
 # Predictive Models tab
 with tabs[4]:
     st.header('Predictive Models')
-    model_choice = st.selectbox('Select Model', ['Random Forest', 'SARIMA', 'LSTM'])
+    model_choice = st.selectbox('Select Model', ['Random Forest', 'SARIMA', 'LSTM'], key='model_choice')
     if model_choice == 'Random Forest':
         st.write('Random Forest model details and predictions...')
     elif model_choice == 'SARIMA':
@@ -95,7 +93,7 @@ with tabs[4]:
 # Investment Strategy tab
 with tabs[5]:
     st.header('Investment Strategy')
-    strategy_choice = st.selectbox('Select Strategy', ['Predicted Bitcoin Prices', 'Actual Bitcoin Prices'])
+    strategy_choice = st.selectbox('Select Strategy', ['Predicted Bitcoin Prices', 'Actual Bitcoin Prices'], key='strategy_choice')
     if strategy_choice == 'Predicted Bitcoin Prices':
         st.write('Investment strategy based on predicted Bitcoin prices...')
     elif strategy_choice == 'Actual Bitcoin Prices':
@@ -106,4 +104,5 @@ with tabs[6]:
     st.header('Latest Bitcoin News')
     st.write('Here you can display the latest news about Bitcoin...')
     # Placeholder for news integration (could be an API call to a news service)
+
 
