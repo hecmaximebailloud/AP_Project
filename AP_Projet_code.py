@@ -101,15 +101,11 @@ with tabs[5]:
 
 # Bitcoin News tab
 with tabs[6]:
-    st.header('Latest Bitcoin News')
-    st.write('Here are the latest news about Bitcoin and cryptocurrencies in general')
+    st.header('Latest Bitcoin and Global Financial News')
+    st.write('Here are the latest news about Bitcoin and cryptocurrencies, as well as news about financial markets')
     # Placeholder for news integration (could be an API call to a news service)
 
-# General Financial Markets News tab
-with tabs[7]:
-    st.header('Latest Financial Markets News')
-    st.write('Here are the latest news about the global financial world.')
-    # Placeholder for news integration (could be an API call to a news service)
+
 
 
 
