@@ -1,5 +1,6 @@
-import pandas as pd
 import numpy as np
+
+import pandas as pd
 
 def load_data(file_path):
     data = pd.read_csv(file_path)
@@ -8,7 +9,7 @@ def load_data(file_path):
     return data
 
 def preprocess_data(btc):
-    start_date = pd.to_datetime('2011-01-09')  
+    start_date = pd.to_datetime('2011-09-01')
     end_date = pd.to_datetime('2023-12-24')
 
     # Ensure 'Date' column is in datetime format
@@ -41,6 +42,7 @@ def preprocess_all_data(all_data, start_date):
     for i, element in enumerate(all_data):
         element['Date'] = pd.to_datetime(element['Date'], errors='coerce')
         element.drop(element[element['Date'] < start_date].index, inplace=True)
+        element.sort_values(by='Date', inplace=True)
     return all_data
 
 def merge_datasets(all_data):
@@ -93,6 +95,7 @@ def calculate_z_score(returns_df, volatility_df, prices_df):
     z_score_df.fillna(0, inplace=True)
 
     return z_score_df
+
 
 
 
