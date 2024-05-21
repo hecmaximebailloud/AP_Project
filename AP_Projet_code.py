@@ -44,7 +44,7 @@ selected_features = st.sidebar.multiselect('Select Features', features)
 # Display selected features returns and volatility
 if selected_features:
     st.header('Returns')
-    returns = dataset_returns[selected_features]
+    returns = dataset_returns[features]
     st.line_chart(returns)
 
     st.header('Volatility')
