@@ -50,3 +50,4 @@ def calculate_volatility(df, window=4):
     return volatility_df.add_suffix('_volatility')
 
 
+
