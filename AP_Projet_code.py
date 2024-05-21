@@ -102,6 +102,7 @@ with tabs[5]:
 # Correlation tab
 with tabs[6]:
     st.header('Correlation')
+    st.write(f'First, you need to choose whcih features you want to add in the correlation matrix. Then, You can customize the heatmap as you wish (color, size):')  
     features = dataset_returns.columns.tolist()
     selected_features = st.multiselect('Select Features', features, key='correlation_features')
     if selected_features:
@@ -110,8 +111,8 @@ with tabs[6]:
             st.write("Customize Heatmap")
             cmap_option = st.selectbox('Select Color Map', ['coolwarm', 'viridis', 'plasma', 'inferno', 'magma', 'cividis'])
             annot_option = st.checkbox('Show Annotations', value=True)
-            figsize_width = st.slider('Figure Width', min_value=5, max_value=15, value=10)
-            figsize_height = st.slider('Figure Height', min_value=5, max_value=15, value=8)
+            figsize_width = st.slider('Figure Width', min_value=5, max_value=15, value=5)
+            figsize_height = st.slider('Figure Height', min_value=5, max_value=15, value=4)
             
             # Display heatmap
             st.write("Correlation Heatmap")
