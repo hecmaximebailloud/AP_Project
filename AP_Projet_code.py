@@ -48,7 +48,7 @@ if selected_features:
     st.header('Price')
     selected_price = [f"{feature}" for feature in selected_features]
     try:
-        price = dataset_price[selected_price]
+        price = merged_df[selected_price]
         st.line_chart(price)
     except KeyError as e:
         st.error(f"Error selecting price columns: {e}")
