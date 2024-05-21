@@ -58,7 +58,8 @@ with tabs[1]:
 # Returns tab
 with tabs[2]:
     st.header('Returns')
-    selected_features = st.multiselect('Select Features', merged_df.columns.tolist())
+    features = merged_df.columns.tolist()
+    selected_features = st.multiselect('Select Features', features)
     if selected_features:
         try:
             selected_returns = [f"{feature}_returns" for feature in selected_features]
@@ -70,7 +71,8 @@ with tabs[2]:
 # Volatility tab
 with tabs[3]:
     st.header('Volatility')
-    selected_features = st.multiselect('Select Features', merged_df.columns.tolist())
+    features = merged_df.columns.tolist()
+    selected_features = st.multiselect('Select Features', features)
     if selected_features:
         try:
             selected_volatility = [f"{feature}_volatility" for feature in selected_features]
