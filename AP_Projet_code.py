@@ -44,12 +44,20 @@ selected_features = st.sidebar.multiselect('Select Features', features)
 # Display selected features returns and volatility
 if selected_features:
     st.header('Returns')
-    returns = dataset_returns[features]
-    st.line_chart(returns)
+    selected_returns = [f"{feature}_returns" for feature in selected_features]
+    try:
+        returns = dataset_returns[selected_returns]
+        st.line_chart(returns)
+    except KeyError as e:
+        st.error(f"Error selecting returns columns: {e}")
 
     st.header('Volatility')
-    volatility = dataset_volatility[[f"{feature}_volatility" for feature in selected_features]]
-    st.line_chart(volatility)
+    selected_volatility = [f"{feature}_volatility" for feature in selected_features]
+    try:
+        volatility = dataset_volatility[selected_volatility]
+        st.line_chart(volatility)
+    except KeyError as e:
+        st.error(f"Error selecting volatility columns: {e}")
 else:
     st.write("Please select at least one feature to display.")
 
@@ -87,10 +95,13 @@ selected_model = st.sidebar.selectbox('Select Model', model_options)
 if selected_model:
     st.header(f'BTC Price Predictions using {selected_model}')
     # Assume 'features' variable contains the feature columns for prediction
-    features_for_prediction = merged_df[selected_features]
-    predictions = load_model_predictions(selected_model, features_for_prediction)
-    prediction_df = pd.DataFrame({'Date': merged_df.index, 'Predicted_Price': predictions})
-    st.line_chart(prediction_df.set_index('Date'))
+    try:
+        features_for_prediction = merged_df[selected_features]
+        predictions = load_model_predictions(selected_model, features_for_prediction)
+        prediction_df = pd.DataFrame({'Date': merged_df.index, 'Predicted_Price': predictions})
+        st.line_chart(prediction_df.set_index('Date'))
+    except KeyError as e:
+        st.error(f"Error selecting prediction columns: {e}")
 
 
 
