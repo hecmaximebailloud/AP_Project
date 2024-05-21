@@ -11,32 +11,39 @@ def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
     if 'Date' not in df.columns:
         raise ValueError(f"'Date' column not found in the dataset for ticker '{ticker}'.")
 
-    try:
-        df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y', dayfirst=True)
-    except Exception as e:
-        raise ValueError(f"Error converting 'Date' column to datetime for ticker '{ticker}': {e}")
+    df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y', dayfirst=True)
     
     df = df[df['Date'].between(start_date, end_date)]
     df = df[keep_columns].copy()
     return df
 
 def preprocess_all_data(tickers, start_date, end_date, keep_columns):
-    all_data = []
+    btc = load_and_preprocess_data('btc', start_date, end_date, keep_columns)
+    all_data = [btc]
+
     for ticker in tickers:
-        df = load_and_preprocess_data(ticker, start_date, end_date, keep_columns)
-        df.columns = [f"{ticker}_{col}" if col != "Date" else "Date" for col in df.columns]
+        df = pd.read_excel(f'data/{ticker}.csv')
+        df = df[keep_columns].copy()
+        df['Date'] = pd.to_datetime(df['Date'])
+        df = df[df['Date'].between(start_date, end_date)]
         all_data.append(df)
 
-    common_dates_all = set(all_data[0]['Date'])
-    for df in all_data[1:]:
-        common_dates_all.intersection_update(set(df['Date']))
-
+    common_dates_all = set(btc['Date'])
     for i, df in enumerate(all_data):
-        all_data[i] = df[df['Date'].isin(common_dates_all)].copy()
-        
-    merged_df = pd.concat(all_data, axis=1)
+        common_dates_all &= set(df['Date'])
+
+    all_dates = pd.DataFrame({'Date': sorted(common_dates_all)})
+    all_datasets_filled = [btc]
+    for dataset in all_data[1:]:
+        dataset_filled = pd.merge(all_dates, dataset, on='Date', how='left')
+        dataset_filled = dataset_filled.fillna(method='ffill')
+        all_datasets_filled.append(dataset_filled)
+
+    for i, (df, ticker) in enumerate(zip(all_datasets_filled, ['btc'] + tickers)):
+        df.columns = [f"{ticker}_{col}" if col != "Date" else "Date" for col in df.columns]
+
+    merged_df = pd.concat(all_datasets_filled, axis=1)
     merged_df = merged_df.loc[:, ~merged_df.columns.duplicated()]
-    merged_df['Date'] = pd.to_datetime(merged_df['Date'])
     merged_df.set_index('Date', inplace=True)
     
     return merged_df
@@ -48,6 +55,7 @@ def calculate_returns(df):
 def calculate_volatility(df, window=4):
     volatility_df = df.rolling(window=window).std().replace([np.inf, -np.inf], np.nan).fillna(0)
     return volatility_df.add_suffix('_volatility')
+
 
 
 
