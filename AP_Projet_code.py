@@ -150,11 +150,43 @@ with tabs[2]:
     if selected_features:
         try:
             selected_returns = [f"{feature}_returns" for feature in selected_features]
-            returns = dataset_returns[selected_returns]
-            st.line_chart(returns)
+            
+            st.write("### Select Date Range")
+            min_date = pd.to_datetime(dataset_returns.index.min())
+            max_date = pd.to_datetime(dataset_returns.index.max())
+            start_date, end_date = st.date_input("Date range:", [min_date, max_date], key='returns_date_range')
+            
+            if start_date > end_date:
+                st.error("Error: End date must be greater than start date.")
+            else:
+                filtered_returns = dataset_returns.loc[start_date:end_date, selected_returns]
+                
+                st.write("### Customize Plot")
+                chart_type = st.selectbox("Select Chart Type", ['Line Chart', 'Area Chart', 'Bar Chart'], key='returns_chart_type')
+                show_cumulative_returns = st.checkbox("Show Cumulative Returns", value=False, key='cumulative_returns')
+                colors = st.color_picker("Pick a Color for the Plot", key='returns_plot_color')
+
+                if show_cumulative_returns:
+                    cumulative_returns = (1 + filtered_returns).cumprod() - 1
+                    plot_data = cumulative_returns
+                else:
+                    plot_data = filtered_returns
+
+                st.write("### Returns Chart")
+                if chart_type == 'Line Chart':
+                    st.line_chart(plot_data)
+                elif chart_type == 'Area Chart':
+                    st.area_chart(plot_data)
+                elif chart_type == 'Bar Chart':
+                    st.bar_chart(plot_data)
+
+                st.write("### Plot Details")
+                st.markdown(f"**Selected Features:** {', '.join(selected_features)}")
+                st.markdown(f"**Date Range:** {start_date} to {end_date}")
+
         except KeyError as e:
             st.error(f"Error selecting returns columns: {e}")
-
+          
 # Volatility tab
 with tabs[3]:
     st.header('Volatility of Features')
