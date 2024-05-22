@@ -88,13 +88,6 @@ with tabs[0]:
  - **Challenges**: Prediction accuracy varies during significant market events such as Bitcoin halving.
 """)
 
- # Visualizations
- st.write("## Visualizations")
-
- # Assuming you have some plots saved from your project
- # Display a sample plot
- st.image("path_to_sample_plot.png", caption="Sample Plot of Model Performance")
-
  # Project Details
  st.write("## Project Details")
  st.markdown("""
