@@ -60,17 +60,62 @@ tabs = st.tabs(['Home', 'Prices', 'Returns', 'Volatility', 'Groups Analysis', 'P
 
 # Home tab
 with tabs[0]:
-    st.title('Financial Analysis and Prediction App')
-    st.write("""
-        Welcome to the Financial Analysis and Prediction App. This application allows you to analyze and predict financial data using various models.
-        You can explore different financial metrics, apply predictive models, and devise investment strategies based on predicted and actual prices.
-    """)
+  # Title and Introduction
+ st.title("Impact of Economic Indicators on Bitcoin Price Predictions and Investment Strategies")
+ st.write("""
+ Welcome to the Bitcoin Price Prediction and Investment Strategy Dashboard.
+
+ This project aims to develop a framework for predicting Bitcoin prices using various machine-learning models and economic indicators. We have used Random Forest, SARIMA, and LSTM models to analyze the data and develop investment strategies. Explore the different sections to learn more about the methodology, results, and insights.
+""")
+
+# Navigation Links
+ st.write("## Navigate to Sections")
+ st.markdown("""
+ - [Introduction](#introduction)
+ - [Research Question and Literature](#research-question-and-literature)
+ - [Methodology](#methodology)
+ - [Results](#results)
+ - [Investment Strategy](#investment-strategy)
+ - [Conclusion](#conclusion)
+""")
+
+ # Key Insights
+ st.write("## Key Insights")
+ st.markdown("""
+ - **Model Performance**: The Random Forest model with feature selection (RFE) provided more accurate predictions compared to models using all features.
+ - **Feature Importance**: Economic indicators such as equity indices, commodity prices, and blockchain metrics significantly impact Bitcoin prices.
+ - **Investment Strategy**: The Moving Average Crossover Strategy based on SARIMA and Random Forest predictions shows practical application for making investment decisions.
+ - **Challenges**: Prediction accuracy varies during significant market events such as Bitcoin halving.
+""")
+
+ # Visualizations
+ st.write("## Visualizations")
+
+ # Assuming you have some plots saved from your project
+ # Display a sample plot
+ st.image("path_to_sample_plot.png", caption="Sample Plot of Model Performance")
+
+ # Project Details
+ st.write("## Project Details")
+ st.markdown("""
+ For detailed information about the project, methodology, and results, please refer to the following sections or visit the [GitHub repository](https://github.com/your-repo-link).
+
+ - [Introduction](#introduction)
+ - [Research Question and Literature](#research-question-and-literature)
+ - [Methodology](#methodology)
+ - [Results](#results)
+ - [Investment Strategy](#investment-strategy)
+ - [Conclusion](#conclusion)
+ """)
+   
+
+
 
 # Prices tab
 with tabs[1]:
-    st.header('Price')
+    st.header('Prices of Features')
     features = merged_df.columns.tolist()
-    selected_features = st.multiselect('Select Features', features, key='price_features')
+    selected_features = st.multiselect('Select one or more Features:', features, key='price_features')
     if selected_features:
         try:
             selected_price = [f"{feature}" for feature in selected_features]
@@ -81,8 +126,8 @@ with tabs[1]:
 
 # Returns tab
 with tabs[2]:
-    st.header('Returns')
-    selected_features = st.multiselect('Select Features', merged_df.columns.tolist(), key='returns_features')
+    st.header('Returns of Features')
+    selected_features = st.multiselect('Select one or more Features:', merged_df.columns.tolist(), key='returns_features')
     if selected_features:
         try:
             selected_returns = [f"{feature}_returns" for feature in selected_features]
@@ -93,8 +138,8 @@ with tabs[2]:
 
 # Volatility tab
 with tabs[3]:
-    st.header('Volatility')
-    selected_features = st.multiselect('Select Features', merged_df.columns.tolist(), key='volatility_features')
+    st.header('Volatility of Features')
+    selected_features = st.multiselect('Select one or more Features:', merged_df.columns.tolist(), key='volatility_features')
     if selected_features:
         try:
             selected_volatility = [f"{feature}_volatility" for feature in selected_features]
@@ -106,7 +151,7 @@ with tabs[3]:
 # Groups tab
 with tabs[4]:
   st.header('Groups Analysis')
-  group_choice = st.selectbox('Select what you want to see in details', ['Groups Overview', 'Groups Importance', 'Importance Evolution'], key = 'group_choice')
+  group_choice = st.selectbox('Select what you want to see in details about groups', ['Groups Overview', 'Groups Importance', 'Importance Evolution'], key = 'group_choice')
   if group_choice == 'Groups Overview':
     st.header('Features and Groups')
     for group, features in feature_groups.items():
