@@ -32,34 +32,7 @@ dataset_returns = calculate_returns(merged_df)
 dataset_volatility = calculate_volatility(merged_df)
 
 # Streamlit interface
-
-custom_css = """
-<style>
-body {
-    background-color: #1e3d59;
-    color: #ffffff;
-}
-.sidebar .sidebar-content {
-    background-color: #1e3d59;
-}
-.stButton>button {
-    background-color: #1e3d59;
-    color: #ffffff;
-}
-.stTabs .stTabs__tab {
-    background-color: #1e3d59;
-    color: #ffffff;
-}
-.stTabs .stTabs__tab--selected {
-    background-color: #1e3d59;
-    color: #ffffff;
-    border-bottom: 2px solid #ffffff;
-}
-</style>
-"""
-
-# Inject the custom CSS
-st.markdown(custom_css, unsafe_allow_html=True)
+st.set_page_config(page_title='Financial Analysis and Prediction App', layout='wide')
 
 tabs = st.tabs(['Home', 'Prices', 'Returns', 'Volatility', 'Groups Analysis', 'Predictive Models', 'Investment Strategy', 'Correlation', 'Crypto News'])
 
