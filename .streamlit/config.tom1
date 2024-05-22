@@ -1,1 +1,10 @@
-
+[theme]
+primaryColor="#1e3d59"
+backgroundColor="#1e3d59"
+secondaryBackgroundColor="#1e3d59"
+textColor="#ffffff"
+font="sans serif"
+fontFamily="Roboto"
+fontSize=16
+borderColor="#cccccc"
+borderWidth=1
