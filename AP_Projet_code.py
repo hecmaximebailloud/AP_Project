@@ -110,8 +110,8 @@ with tabs[4]:
   if group_choice == 'Groups Overview':
     st.header('Features and Groups')
     for group, features in feature_groups.items():
-       with st.expander(group):
-           st.write(features)
+        with st.expander(group):
+             st.markdown("\n".join([f"- {feature}" for feature in features]))
 
   elif group_choice == 'Groups Importance':
     st.header('Importance of each group in the Random Forest model')
