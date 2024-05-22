@@ -33,7 +33,7 @@ dataset_volatility = calculate_volatility(merged_df)
 # Streamlit interface
 st.set_page_config(page_title='Financial Analysis and Prediction App', layout='wide')
 
-tabs = st.tabs(['Home', 'Prices', 'Returns', 'Volatility', 'Predictive Models', 'Investment Strategy', 'Correlation', 'Crypto News'])
+tabs = st.tabs(['Home', 'Prices', 'Returns', 'Volatility', 'Groups Analysis', 'Predictive Models', 'Investment Strategy', 'Correlation', 'Crypto News'])
 
 # Home tab
 with tabs[0]:
@@ -79,6 +79,24 @@ with tabs[3]:
             st.line_chart(volatility)
         except KeyError as e:
             st.error(f"Error selecting volatility columns: {e}")
+
+# Groups tab
+with tabs[4]:
+  st.header('Groups Analysis')
+  group_choice = st.selectbox('Select what you want to see in details', ['Groups Overview', 'Groups Importance', 'Importance Evolution'], key = 'group_choice')
+  if group_choice == 'Groups Overview':
+    st.header('Features and Groups')
+
+  elif group_choice == 'Groups Importance':
+    st.header('Importance of each group in the Random Forest model')
+    st.image("Group's Importance.png", caption = 'Importance of each group for the Random Forest predictions', use_column_width = False)
+
+  elif group_choice == 'Importance Evolution':
+    st.header('Evolution of the two most important groups')
+    st.image('Evolution of groups importance BCM and EI .png', caption = 'Evolution of their importance over time', use_column_width = False)
+  
+
+
 
 # Predictive Models tab
 with tabs[4]:
