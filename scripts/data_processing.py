@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from newsapi import NewsApiClient
 
 def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
     try:
