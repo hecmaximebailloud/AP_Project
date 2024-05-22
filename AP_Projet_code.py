@@ -69,7 +69,6 @@ with tabs[0]:
 """)
 
 
- # Key Insights
  st.write("## Key Insights")
  st.markdown("""
  - **Model Performance**: The Random Forest model with feature selection (RFE) provided more accurate predictions compared to models using all features.
@@ -78,7 +77,6 @@ with tabs[0]:
  - **Challenges**: Prediction accuracy varies during significant market events such as Bitcoin halving.
 """)
 
- # Project Details
  st.write("## Project Details")
  st.markdown("""
  For detailed information about the project, methodology, and results, please refer to the following sections or visit the [GitHub repository](https://github.com/hecmaximebailloud/AP_Project.git).
@@ -102,7 +100,6 @@ with tabs[1]:
     features = merged_df.columns.tolist()
     selected_features = st.multiselect('Select one or more Features:', features, key='price_features')
     if selected_features:
-# Date range selector
         st.write("### Select Date Range")
         min_date = pd.to_datetime(merged_df.index.min())
         max_date = pd.to_datetime(merged_df.index.max())
@@ -112,17 +109,14 @@ with tabs[1]:
             st.error("Error: End date must be greater than start date.")
         else:
             try:
-                # Filter data by date range
                 filtered_df = merged_df.loc[start_date:end_date, selected_features]
                 
-                # Plot customization options
                 st.write("### Customize Plot")
                 chart_type = st.selectbox("Select Chart Type", ['Line Chart', 'Area Chart'], key='chart_type')
                 show_moving_average = st.checkbox("Show Moving Average", value=False, key='moving_average')
                 st.write("##### Choose a Moving average window between a 10-week and a 50-week period")
                 ma_window = st.slider("Moving Average Window", min_value=1, max_value=30, value=5, key='ma_window')
 
-                # Plot data
                 st.write("### Price Chart")
                 if chart_type == 'Line Chart':
                     if show_moving_average:
@@ -134,7 +128,6 @@ with tabs[1]:
                 elif chart_type == 'Area Chart':
                     st.area_chart(filtered_df)
 
-                # Enhance plot details
                 st.write("### Plot Details")
                 st.markdown(f"**Selected Features:** {', '.join(selected_features)}")
                 st.markdown(f"**Date Range:** {start_date} to {end_date}")
@@ -203,10 +196,8 @@ with tabs[3]:
             if start_date > end_date:
                 st.error("Error: End date must be greater than start date.")
             else:
-                # Filter data by date range
                 filtered_volatility = dataset_volatility.loc[start_date:end_date, selected_volatility]
                 
-                # Plot customization options
                 st.write("### Customize Plot")
                 chart_type = st.selectbox("Select Chart Type", ['Line Chart', 'Area Chart'], key='volatility_chart_type')
                 show_rolling_volatility = st.checkbox("Show Rolling Volatility", value=False, key='rolling_volatility')
@@ -218,14 +209,12 @@ with tabs[3]:
                 else:
                     plot_data = filtered_volatility
 
-                # Plot data
                 st.write("### Volatility Chart")
                 if chart_type == 'Line Chart':
                     st.line_chart(plot_data)
                 elif chart_type == 'Area Chart':
                     st.area_chart(plot_data)
 
-                # Enhance plot details
                 st.write("### Plot Details")
                 st.markdown(f"**Selected Features:** {', '.join(selected_features)}")
                 st.markdown(f"**Date Range:** {start_date} to {end_date}")
@@ -265,14 +254,50 @@ with tabs[5]:
         st.write('You will find below the accuracy comparison between both Random Forest models.')
         st.image('Screen Shot 2024-05-16 at 8.42.15 pm.png', caption='Random Forest Model', use_column_width=True)
         st.image('Accuracy Comparison between RFE and all features .png', caption = 'Accuracy of the predicted prices over time', use_column_width = False)
-
+        st.write("### Insights")
+        st.write("""
+        The Random Forest model with all features shows a broad view of how different economic indicators influence Bitcoin prices. 
+        Using Recursive Feature Elimination, the model was refined to focus on the most significant features, resulting in improved prediction accuracy.
+        """)
+        st.markdown("""
+        **Key Points:**
+        - The full-feature model includes 34 features, capturing various economic indicators.
+        - The RFE model narrows down to 5 key features: Google, Tesla, Nasdaq, S&P500, and miner revenue.
+        - The accuracy comparison highlights the improvement achieved through feature selection.
+        """)
     elif model_choice == 'SARIMA':
         st.subheader('SARIMA model details and predictions')
         st.image('Consolidated BTC prices comparison.png', caption = 'SARIMA model', use_column_width = False)
+        st.write("### Insights")
+        st.write("""
+        The SARIMA model is particularly effective in capturing seasonal trends and time-series patterns in Bitcoin prices.
+        The model uses historical price data to identify recurring patterns and predict future prices.
+        """)
+        st.markdown("""
+        **Key Points:**
+        - SARIMA stands for Seasonal Autoregressive Integrated Moving Average.
+        - It is well-suited for data with strong seasonal effects.
+        - The model effectively captures both trend and seasonality in Bitcoin prices.
+        """)
     elif model_choice == 'LSTM':
         st.subheader('LSTM model details and predictions')
         st.write('As you can see below, the overall predicted price is quite good, but the forecasted price does not look good. I would advise you not to pay attention to this if you want to invest in Bitcoin...')  
         st.image('Screen Shot 2024-05-18 at 5.35.41 pm.png', caption = 'LSTM model', use_column_width = False)
+        st.write("### Predictions and Comparisons")
+        st.image('Screen Shot 2024-05-18 at 5.35.41 pm.png', caption='LSTM Model Predictions', use_column_width=True)
+        
+        st.write("### Insights")
+        st.write("""
+        While the LSTM model shows promise in capturing complex temporal dependencies, its performance on forecasted prices can vary.
+        The model's predictions highlight areas where deep learning techniques can be further optimized for financial time-series forecasting.
+        """)
+        st.markdown("""
+        **Key Points:**
+        - LSTM stands for Long Short-Term Memory, a recurrent neural network (RNN) type.
+        - LSTMs are designed to handle long-term dependencies in sequential data.
+        - The model's performance depends on the quality and amount of training data.
+        """)
+
 
 # Investment Strategy tab
 with tabs[6]:
