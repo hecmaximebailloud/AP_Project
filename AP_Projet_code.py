@@ -68,18 +68,6 @@ with tabs[0]:
  This project aims to develop a framework for predicting Bitcoin prices using various machine-learning models and economic indicators. We have used Random Forest, SARIMA, and LSTM models to analyze the data and develop investment strategies. Explore the different sections to learn more about the methodology, results, and insights.
 """)
 
-# Navigation Links
- st.write("## Navigate to Sections")
- st.markdown("""
- - [Prices](#introduction)
- - [Returns)
- - [Volatility](#methodology)
- - [Groups Analysis](#results)
- - [Predictive Models](#investment-strategy)
- - [Investment Strategy](#conclusion)
- - [Correlation]
- - [Crypto News]
-""")
 
  # Key Insights
  st.write("## Key Insights")
@@ -95,14 +83,14 @@ with tabs[0]:
  st.markdown("""
  For detailed information about the project, methodology, and results, please refer to the following sections or visit the [GitHub repository](https://github.com/your-repo-link).
 
- - [Prices](#introduction)
- - [Returns)
- - [Volatility](#methodology)
- - [Groups Analysis](#results)
- - [Predictive Models](#investment-strategy)
- - [Investment Strategy](#conclusion)
- - [Correlation]
- - [Crypto News]
+ - [Prices](#prices)
+ - [Returns](#returns)
+ - [Volatility](#volatility)
+ - [Groups Analysis](#groups)
+ - [Predictive Models](#models)
+ - [Investment Strategy](#investment)
+ - [Correlation](#correlation)
+ - [Crypto News](#news)
  """)
    
 
