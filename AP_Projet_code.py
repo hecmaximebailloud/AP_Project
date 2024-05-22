@@ -99,7 +99,7 @@ with tabs[4]:
 
 
 # Predictive Models tab
-with tabs[4]:
+with tabs[5]:
     st.header('Predictive Models')
     model_choice = st.selectbox('Select Model', ['Random Forest', 'SARIMA', 'LSTM'], key='model_choice')
     if model_choice == 'Random Forest':
@@ -119,7 +119,7 @@ with tabs[4]:
         st.image('Screen Shot 2024-05-18 at 5.35.41 pm.png', caption = 'LSTM model', use_column_width = False)
 
 # Investment Strategy tab
-with tabs[5]:
+with tabs[6]:
     st.header('Investment Strategy')
     st.subheader('Moving-Average Crossover Strategy')
     st.write('The strategy selected is the Moving-Average Crossover Strategy. This strategy involves taking long and short positions based on the crossover points of short-term and long-term moving averages, we buy when we forecast a price increase (positive signal) and go short when we forecast a decrease (negative signal).')  
@@ -139,7 +139,7 @@ with tabs[5]:
         st.image('Strat perf actual prices.png', caption = 'Performance of the strategy and the benchmark', use_column_width = False)
 
 # Correlation tab
-with tabs[6]:
+with tabs[7]:
     st.header('Correlation')
     st.write(f'First, you need to choose which features you want to add in the correlation matrix. Then, You can customize the heatmap as you wish (color, size):')  
     features = dataset_returns.columns.tolist()
@@ -165,7 +165,7 @@ with tabs[6]:
             st.error(f"Error selecting features for correlation: {e}")
 
 # Bitcoin News tab
-with tabs[7]:
+with tabs[8]:
     st.header('Latest Bitcoin and Cryptocurrencies News')
     api_key = 'e2542da4e232487f8a2b6e1702e8db2f'
     news_articles = fetch_latest_news(api_key)
