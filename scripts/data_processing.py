@@ -1,6 +1,8 @@
 # scripts/data_processing.py
 import pandas as pd
 import numpy as np
+from newsapi import NewsApiClient
+
 
 def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
     try:
@@ -56,28 +58,26 @@ def calculate_volatility(df, window=4):
     volatility_df = df.rolling(window=window).std().replace([np.inf, -np.inf], np.nan).fillna(0)
     return volatility_df.add_suffix('_volatility')
 
-# scripts/news_scraper.py
-import requests
-from bs4 import BeautifulSoup
 
-def fetch_latest_news():
-    url = 'https://www.boursier.com/crypto-monnaies/actualites'
-    response = requests.get(url)
+def fetch_latest_news(api_key):
+    newsapi = NewsApiClient(api_key=api_key)
     
-    if response.status_code != 200:
-        return []
-
-    soup = BeautifulSoup(response.content, 'html.parser')
-    articles = soup.find_all('div', class_='c-article-flux__content')
-
+    # Fetch top headlines about Bitcoin and Cryptocurrency
+    all_articles = newsapi.get_everything(q='bitcoin OR cryptocurrency', language='en', sort_by='publishedAt')
+    
+    articles = all_articles['articles']
     news_list = []
+    
     for article in articles:
-        title = article.find('a').get_text(strip=True)
-        link = article.find('a')['href']
-        summary = article.find('div', class_='c-article-flux__chapo').get_text(strip=True)
-        news_list.append({'title': title, 'link': 'https://www.boursier.com' + link, 'summary': summary})
-
+        news_item = {
+            'title': article['title'],
+            'link': article['url'],
+            'summary': article['description']
+        }
+        news_list.append(news_item)
+    
     return news_list
+
 
 
 
