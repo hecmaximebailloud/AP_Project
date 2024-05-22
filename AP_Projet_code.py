@@ -102,7 +102,7 @@ with tabs[5]:
 # Correlation tab
 with tabs[6]:
     st.header('Correlation')
-    st.write(f'First, you need to choose whcih features you want to add in the correlation matrix. Then, You can customize the heatmap as you wish (color, size):')  
+    st.write(f'First, you need to choose which features you want to add in the correlation matrix. Then, You can customize the heatmap as you wish (color, size):')  
     features = dataset_returns.columns.tolist()
     selected_features = st.multiselect('Select Features', features, key='correlation_features')
     if selected_features:
