@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import os
-from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility
+from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility, fetch_latest_news
 
 
 # Define start and end dates for the weekly data
@@ -129,6 +129,15 @@ with tabs[6]:
 # Bitcoin News tab
 with tabs[7]:
     st.header('Latest Bitcoin News')
+    api_key = 'e2542da4e232487f8a2b6e1702e8db2f'
+    news_articles = fetch_latest_news(api_key)
+    if news_articles:
+        for article in news_articles:
+            st.subheader(article['title'])
+            st.write(article['summary'])
+            st.markdown(f"[Read more]({article['link']})")
+    else:
+        st.write("Failed to fetch the latest news.")
     
     
 
