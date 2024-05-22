@@ -128,8 +128,8 @@ with tabs[6]:
 # Bitcoin News tab
 with tabs[7]:
     st.header('Latest Bitcoin News')
-    st.write('Here are the latest news about Bitcoin and cryptocurrencies')
-    news_articles = fetch_latest_news()
+    api_key = 'e2542da4e232487f8a2b6e1702e8db2f' 
+    news_articles = fetch_latest_news(api_key)
     if news_articles:
         for article in news_articles:
             st.subheader(article['title'])
@@ -137,6 +137,7 @@ with tabs[7]:
             st.markdown(f"[Read more]({article['link']})")
     else:
         st.write("Failed to fetch the latest news.")
+
 
 # Global News tab
 with tabs[8]:
