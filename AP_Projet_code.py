@@ -109,9 +109,9 @@ with tabs[4]:
   group_choice = st.selectbox('Select what you want to see in details', ['Groups Overview', 'Groups Importance', 'Importance Evolution'], key = 'group_choice')
   if group_choice == 'Groups Overview':
     st.header('Features and Groups')
-    group = st.selectbox("Select a group", list(feature_groups.keys()))
-    st.write("Features for the selected group:")
-    st.write(feature_groups[group])
+    for group, features in feature_groups.items():
+    with st.expander(group):
+        st.write(features)
 
   elif group_choice == 'Groups Importance':
     st.header('Importance of each group in the Random Forest model')
