@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import os
-from scripts.data_processing.py import preprocess_all_data, calculate_returns, calculate_volatility
+from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility
 
 # Define start and end dates for the weekly data
 start_date = pd.to_datetime('2011-01-09')
