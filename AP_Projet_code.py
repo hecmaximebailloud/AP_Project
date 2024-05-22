@@ -129,14 +129,7 @@ with tabs[6]:
 # Bitcoin News tab
 with tabs[7]:
     st.header('Latest Bitcoin News')
-    api_key = 'e2542da4e232487f8a2b6e1702e8db2f' 
-    news_articles = fetch_latest_news(api_key)
-    if news_articles:
-        for article in news_articles:
-            st.subheader(article['title'])
-            
-    else:
-        st.write("Failed to fetch the latest news.")
+    
     
 
 
