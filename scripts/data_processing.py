@@ -1,8 +1,5 @@
-# scripts/data_processing.py
 import pandas as pd
 import numpy as np
-from newsapi import NewsApiClient
-
 
 def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
     try:
@@ -59,26 +56,7 @@ def calculate_volatility(df, window=4):
     return volatility_df.add_suffix('_volatility')
 
 
-def fetch_latest_news(api_key):
-    newsapi = NewsApiClient(api_key=api_key)
-    
-    # Fetch top headlines about Bitcoin and Cryptocurrency
-    all_articles = newsapi.get_everything(q='bitcoin OR cryptocurrency', language='en', sort_by='publishedAt')
-    
-    articles = all_articles['articles']
-    news_list = []
-    
-    for article in articles:
-        news_item = {
-            'title': article['title'],
-            'link': article['url'],
-            'summary': article['description']
-            'source': article['source']['name'],
-            'published_at': article['publishedAt']
-        }
-        news_list.append(news_item)
-    
-    return news_list
+
 
 
 
