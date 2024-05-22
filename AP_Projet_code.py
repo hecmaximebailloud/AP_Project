@@ -20,6 +20,28 @@ all_data_ticker = ['AMAZON', 'APPLE', 'google', 'TESLA',
                  'renminbiusd', 'yenusd', 'eurodollar' ,'gbpusd',
                  'active_address_count', 'addr_cnt_bal_sup_10K', 'addr_cnt_bal_sup_100K', 'miner-revenue-native-unit', 'miner-revenue-USD', 'mvrv', 'nvt', 'tx-fees-btc', 'tx-fees-usd']
 
+feature_groups = {
+        "Equity_Indices": [
+            "DowJones", "Nasdaq", "S&P", "Cac40", "ftse", "NKY"
+        ],
+        "Individual_Stocks": [
+            "AMAZON", "APPLE", "google", "TESLA"
+        ],
+        "Commodity_Prices": [
+            "GOLD", "CL1 COMB Comdty", "NG1 COMB Comdty", "CO1 COMB Comdty"
+        ],
+        "Interest_Rates_Yields": [
+            "USYC2Y10", "TED SPREAD EUR", "TED SPREAD US", "TED SPREAD JPN", "EURR002W", "JPYC2Y10","DEYC2Y10"
+        ],
+       
+        "Blockchain_Cryptocurrency_Metrics": [
+            "active_address_count", "addr_cnt_bal_sup_10K", "addr_cnt_bal_sup_100K", "miner-revenue-native-unit", "miner-revenue-USD", "mvrv", "nvt", "tx-fees-btc", "tx-fees-usd"
+        ],
+        "Foreign_Exchange_Rates": [
+            "eurodollar", "gbpusd", "renminbiusd", "yenusd"
+        ]
+         }
+
 # Preprocess data
 try:
     merged_df = preprocess_all_data(all_data_ticker, start_date, end_date, keep_columns)
@@ -87,6 +109,9 @@ with tabs[4]:
   group_choice = st.selectbox('Select what you want to see in details', ['Groups Overview', 'Groups Importance', 'Importance Evolution'], key = 'group_choice')
   if group_choice == 'Groups Overview':
     st.header('Features and Groups')
+    group = st.selectbox("Select a group", list(feature_groups.keys()))
+    st.write("Features for the selected group:")
+    st.write(feature_groups[group])
 
   elif group_choice == 'Groups Importance':
     st.header('Importance of each group in the Random Forest model')
