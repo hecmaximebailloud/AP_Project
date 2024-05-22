@@ -164,7 +164,6 @@ with tabs[2]:
                 st.write("### Customize Plot")
                 chart_type = st.selectbox("Select Chart Type", ['Line Chart', 'Area Chart', 'Bar Chart'], key='returns_chart_type')
                 show_cumulative_returns = st.checkbox("Show Cumulative Returns", value=False, key='cumulative_returns')
-                colors = st.color_picker("Pick a Color for the Plot", key='returns_plot_color')
 
                 if show_cumulative_returns:
                     cumulative_returns = (1 + filtered_returns).cumprod() - 1
