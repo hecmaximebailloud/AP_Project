@@ -142,10 +142,7 @@ with tabs[7]:
 # Global News tab
 with tabs[8]:
     st.header('Global Financial Markets News')
-    st.write('Here are the latest news about financial markets all around the world')
-    # Placeholder for news integration (could be an API call to a news service)
-
-
+    
 
 
 
