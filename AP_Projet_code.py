@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import os
-from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility, fetch_latest_news, fetch_latest_global_news
+from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility, fetch_latest_news
 
 # Define start and end dates for the weekly data
 start_date = pd.to_datetime('2011-01-09')
@@ -145,18 +145,7 @@ with tabs[7]:
 # Global News tab
 with tabs[8]:
     st.header('Global Financial Markets News')
-    api_key = 'e2542da4e232487f8a2b6e1702e8db2f' 
-    news_articles = fetch_latest_global_news(api_key)
-    if news_articles:
-        for article in news_articles:
-            st.subheader(article['title'])
-            st.write(f"**Source:** {article['source']}")
-            st.write(f"**Published at:** {article['published_at']}")
-            st.write(article['summary'])
-            st.markdown(f"[Read more]({article['link']})")
-            st.write("---")
-    else:
-        st.write("Failed to fetch the latest news.")
+    
 
 
 
