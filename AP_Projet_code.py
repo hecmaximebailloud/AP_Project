@@ -33,7 +33,7 @@ dataset_volatility = calculate_volatility(merged_df)
 # Streamlit interface
 st.set_page_config(page_title='Financial Analysis and Prediction App', layout='wide')
 
-tabs = st.tabs(['Home', 'Prices', 'Returns', 'Volatility', 'Predictive Models', 'Investment Strategy', 'Correlation', 'Bitcoin News'])
+tabs = st.tabs(['Home', 'Prices', 'Returns', 'Volatility', 'Predictive Models', 'Investment Strategy', 'Correlation', 'Crypto News'])
 
 # Home tab
 with tabs[0]:
@@ -128,7 +128,7 @@ with tabs[6]:
 
 # Bitcoin News tab
 with tabs[7]:
-    st.header('Latest Bitcoin News')
+    st.header('Latest Bitcoin and Cryptocurrencies News')
     api_key = 'e2542da4e232487f8a2b6e1702e8db2f'
     news_articles = fetch_latest_news(api_key)
     if news_articles:
