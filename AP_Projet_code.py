@@ -193,11 +193,46 @@ with tabs[3]:
     if selected_features:
         try:
             selected_volatility = [f"{feature}_volatility" for feature in selected_features]
-            volatility = dataset_volatility[selected_volatility]
-            st.line_chart(volatility)
+            
+            # Date range selector
+            st.write("### Select Date Range")
+            min_date = pd.to_datetime(dataset_volatility.index.min())
+            max_date = pd.to_datetime(dataset_volatility.index.max())
+            start_date, end_date = st.date_input("Date range:", [min_date, max_date], key='volatility_date_range')
+            
+            if start_date > end_date:
+                st.error("Error: End date must be greater than start date.")
+            else:
+                # Filter data by date range
+                filtered_volatility = dataset_volatility.loc[start_date:end_date, selected_volatility]
+                
+                # Plot customization options
+                st.write("### Customize Plot")
+                chart_type = st.selectbox("Select Chart Type", ['Line Chart', 'Area Chart'], key='volatility_chart_type')
+                show_rolling_volatility = st.checkbox("Show Rolling Volatility", value=False, key='rolling_volatility')
+                rolling_window = st.slider("Rolling Window Size", min_value=1, max_value=30, value=5, key='rolling_window')
+
+                if show_rolling_volatility:
+                    rolling_volatility = filtered_volatility.rolling(window=rolling_window).std()
+                    plot_data = rolling_volatility
+                else:
+                    plot_data = filtered_volatility
+
+                # Plot data
+                st.write("### Volatility Chart")
+                if chart_type == 'Line Chart':
+                    st.line_chart(plot_data)
+                elif chart_type == 'Area Chart':
+                    st.area_chart(plot_data)
+
+                # Enhance plot details
+                st.write("### Plot Details")
+                st.markdown(f"**Selected Features:** {', '.join(selected_features)}")
+                st.markdown(f"**Date Range:** {start_date} to {end_date}")
+
         except KeyError as e:
             st.error(f"Error selecting volatility columns: {e}")
-
+          
 # Groups tab
 with tabs[4]:
   st.header('Groups Analysis')
