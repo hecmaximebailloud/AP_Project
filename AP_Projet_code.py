@@ -85,16 +85,20 @@ with tabs[4]:
     st.header('Predictive Models')
     model_choice = st.selectbox('Select Model', ['Random Forest', 'SARIMA', 'LSTM'], key='model_choice')
     if model_choice == 'Random Forest':
-        st.write('Random Forest model details and predictions.')
-        st.write('Here, you can see the comparison of the predicted prices between Bitcoin actual prices, a Random Forest using all features (34) and a Random Forest using the 5 most explicative features (selected with Recursive Features Elimination)')
-        st.write('You will find below the accuracy comparison between both Random Forest models')
+        st.subheader('Random Forest model details and predictions.')
+        st.write('Here, you can see the comparison of the predicted prices between Bitcoin actual prices, a Random Forest using all features (34) and a Random Forest using the 5 most explicative features (selected with Recursive Features Elimination).')
+        st.write('The top features are Google, Tesla, Nasdaq, S&P500, and miner revenue.')
+        st.write('You will find below the accuracy comparison between both Random Forest models.')
         st.image('Screen Shot 2024-05-16 at 8.42.15 pm.png', caption='Random Forest Model', use_column_width=True)
         st.image('Accuracy Comparison between RFE and all features .png', caption = 'Accuracy of the predicted prices over time', use_column_width = True)
 
     elif model_choice == 'SARIMA':
-        st.write('SARIMA model details and predictions...')
+        st.subheader('SARIMA model details and predictions')
+        st.image('Consolidated BTC prices comparison.png', caption = 'SARIMA model', use_column_width =True)
     elif model_choice == 'LSTM':
-        st.write('LSTM model details and predictions...')
+        st.subheader('LSTM model details and predictions')
+        st.write('As you can see below, the overall predicted price is quite good, but the forecasted price does not look. I would advise you not to pay attention to this if you want to invest in Bitcoin...')  
+        st.image('Screen Shot 2024-05-18 at 5.35.41 pm.png', caption = 'LSTM model'
 
 # Investment Strategy tab
 with tabs[5]:
