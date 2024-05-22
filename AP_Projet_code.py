@@ -102,12 +102,46 @@ with tabs[1]:
     features = merged_df.columns.tolist()
     selected_features = st.multiselect('Select one or more Features:', features, key='price_features')
     if selected_features:
-        try:
-            selected_price = [f"{feature}" for feature in selected_features]
-            price = merged_df[selected_price]
-            st.line_chart(price)
-        except KeyError as e:
-            st.error(f"Error selecting price columns: {e}")
+# Date range selector
+        st.write("### Select Date Range")
+        min_date = pd.to_datetime(merged_df.index.min())
+        max_date = pd.to_datetime(merged_df.index.max())
+        start_date, end_date = st.date_input("Date range:", [min_date, max_date], key='date_range')
+        
+        if start_date > end_date:
+            st.error("Error: End date must be greater than start date.")
+        else:
+            try:
+                # Filter data by date range
+                filtered_df = merged_df.loc[start_date:end_date, selected_features]
+                
+                # Plot customization options
+                st.write("### Customize Plot")
+                chart_type = st.selectbox("Select Chart Type", ['Line Chart', 'Area Chart'], key='chart_type')
+                show_moving_average = st.checkbox("Show Moving Average", value=False, key='moving_average')
+                ma_window = st.slider("Moving Average Window", min_value=1, max_value=30, value=5, key='ma_window')
+                colors = st.color_picker("Pick a Color for the Plot", key='plot_color')
+
+                # Plot data
+                st.write("### Price Chart")
+                if chart_type == 'Line Chart':
+                    if show_moving_average:
+                        for feature in selected_features:
+                            filtered_df[f"{feature}_MA"] = filtered_df[feature].rolling(window=ma_window).mean()
+                        st.line_chart(filtered_df)
+                    else:
+                        st.line_chart(filtered_df)
+                elif chart_type == 'Area Chart':
+                    st.area_chart(filtered_df)
+
+                # Enhance plot details
+                st.write("### Plot Details")
+                st.markdown(f"**Selected Features:** {', '.join(selected_features)}")
+                st.markdown(f"**Date Range:** {start_date} to {end_date}")
+
+            except KeyError as e:
+                st.error(f"Error selecting price columns: {e}")
+
 
 # Returns tab
 with tabs[2]:
