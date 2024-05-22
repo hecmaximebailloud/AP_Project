@@ -5,33 +5,7 @@ import numpy as np
 import os
 from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility, fetch_latest_news
 
-custom_css = """
-<style>
-body {
-    background-color: #1e3d59;
-    color: #ffffff;
-}
-.sidebar .sidebar-content {
-    background-color: #1e3d59;
-}
-.stButton>button {
-    background-color: #1e3d59;
-    color: #ffffff;
-}
-.stTabs .stTabs__tab {
-    background-color: #1e3d59;
-    color: #ffffff;
-}
-.stTabs .stTabs__tab--selected {
-    background-color: #1e3d59;
-    color: #ffffff;
-    border-bottom: 2px solid #ffffff;
-}
-</style>
-"""
 
-# Inject the custom CSS
-st.markdown(custom_css, unsafe_allow_html=True)
 
 # Define start and end dates for the weekly data
 start_date = pd.to_datetime('2011-01-09')
