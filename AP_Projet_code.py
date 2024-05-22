@@ -81,7 +81,7 @@ with tabs[0]:
  # Project Details
  st.write("## Project Details")
  st.markdown("""
- For detailed information about the project, methodology, and results, please refer to the following sections or visit the [GitHub repository](https://github.com/your-repo-link).
+ For detailed information about the project, methodology, and results, please refer to the following sections or visit the [GitHub repository](https://github.com/hecmaximebailloud/AP_Project.git).
 
  - [Prices](#prices)
  - [Returns](#returns)
