@@ -8,3 +8,6 @@ statsmodels
 scikit-learn
 tensorflow
 openpyxl
+beautifulsoup4
+requests
+newsapi-python
