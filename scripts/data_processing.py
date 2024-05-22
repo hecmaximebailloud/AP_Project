@@ -78,6 +78,26 @@ def fetch_latest_news(api_key):
     
     return news_list
 
+def fetch_latest_global_news(api_key):
+    newsapi = NewsApiClient(api_key=api_key)
+    
+    # Fetch top headlines about Financial Markets
+    all_articles = newsapi.get_everything(q='financial markets OR equity indices', language='en', sort_by='publishedAt')
+    
+    articles = all_articles['articles']
+    news_list = []
+    
+    for article in articles:
+        news_item = {
+            'title': article['title'],
+            'link': article['url'],
+            'summary': article['description']
+        }
+        news_list.append(news_item)
+    
+    return news_list
+
+
 
 
 
