@@ -73,6 +73,8 @@ def fetch_latest_news(api_key):
             'title': article['title'],
             'link': article['url'],
             'summary': article['description']
+            'source': article['source']['name'],
+            'published_at': article['publishedAt']
         }
         news_list.append(news_item)
     
