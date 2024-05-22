@@ -85,7 +85,10 @@ with tabs[4]:
     st.header('Predictive Models')
     model_choice = st.selectbox('Select Model', ['Random Forest', 'SARIMA', 'LSTM'], key='model_choice')
     if model_choice == 'Random Forest':
-        st.write('Random Forest model details and predictions...')
+        st.write('Random Forest model details and predictions.')
+        st.write('Here, you can see the comparison of the predicted prices between Bitcoin actual prices, a Random Forest using all features (34) and a Random Forest using the 5 most explicative features (selected with Recursive Features Elimination)')
+        st.image('Screen Shot 2024-05-18 at 5.35.41 pm.png', caption='Random Forest Model', use_column_width=True)
+
     elif model_choice == 'SARIMA':
         st.write('SARIMA model details and predictions...')
     elif model_choice == 'LSTM':
