@@ -33,7 +33,7 @@ dataset_volatility = calculate_volatility(merged_df)
 # Streamlit interface
 st.set_page_config(page_title='Financial Analysis and Prediction App', layout='wide')
 
-tabs = st.tabs(['Home', 'Prices', 'Returns', 'Volatility', 'Predictive Models', 'Investment Strategy', 'Correlation', 'Bitcoin News', 'Global Financial News'])
+tabs = st.tabs(['Home', 'Prices', 'Returns', 'Volatility', 'Predictive Models', 'Investment Strategy', 'Correlation', 'Bitcoin News'])
 
 # Home tab
 with tabs[0]:
@@ -141,10 +141,6 @@ with tabs[7]:
     
     
 
-
-# Global News tab
-with tabs[8]:
-    st.header('Global Financial Markets News')
     
 
 
