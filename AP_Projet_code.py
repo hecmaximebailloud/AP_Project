@@ -63,7 +63,7 @@ with tabs[0]:
   # Title and Introduction
  st.title("Impact of Economic Indicators on Bitcoin Price Predictions and Investment Strategies")
  st.write("""
- Welcome to the Bitcoin Price Prediction and Investment Strategy Dashboard.
+ Welcome to the Bitcoin Price Prediction and Investment Strategy Dashboard App in the context of the Advanced Programming project.
 
  This project aims to develop a framework for predicting Bitcoin prices using various machine-learning models and economic indicators. We have used Random Forest, SARIMA, and LSTM models to analyze the data and develop investment strategies. Explore the different sections to learn more about the methodology, results, and insights.
 """)
