@@ -94,11 +94,15 @@ with tabs[4]:
 # Investment Strategy tab
 with tabs[5]:
     st.header('Investment Strategy')
+    st.subheader('Moving-Average Crossover Strategy')
+    st.write('The strategy selected is the Moving-Average Crossover Strategy. This strategy involves taking long and short positions based on the crossover points of short-term and long-term moving averages, we buy when we forecast a price increase (positive signal) and go short when we forecast a decrease (negative signal)')  
+    st.write('Here you can choose whether the performance of the strategy, based on my predictions, or the performance with the actual prices.') 
     strategy_choice = st.selectbox('Select Strategy', ['Predicted Bitcoin Prices', 'Actual Bitcoin Prices'], key='strategy_choice')
     if strategy_choice == 'Predicted Bitcoin Prices':
-        st.write('Investment strategy based on predicted Bitcoin prices using Recursive Features Elimination')
+        st.write('Investment strategy based on predicted Bitcoin prices using Recursive Features Elimination. RFE output was the 5 most explicative features concerning Bitcoin prices.')
+        st.write('The top features are Google, Tesla, Nasdaq, S&P500, and the miner revenue')
     elif strategy_choice == 'Actual Bitcoin Prices':
-        st.write('Investment strategy based on actual Bitcoin prices...')
+        st.write('Investment strategy based on actual Bitcoin prices')
 
 # Correlation tab
 with tabs[6]:
