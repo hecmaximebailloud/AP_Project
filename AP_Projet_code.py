@@ -89,16 +89,16 @@ with tabs[4]:
         st.write('Here, you can see the comparison of the predicted prices between Bitcoin actual prices, a Random Forest using all features (34) and a Random Forest using the 5 most explicative features (selected with Recursive Features Elimination).')
         st.write('The top features are Google, Tesla, Nasdaq, S&P500, and miner revenue.')
         st.write('You will find below the accuracy comparison between both Random Forest models.')
-        st.image('Screen Shot 2024-05-16 at 8.42.15 pm.png', caption='Random Forest Model', use_column_width=True)
-        st.image('Accuracy Comparison between RFE and all features .png', caption = 'Accuracy of the predicted prices over time', use_column_width = True)
+        st.image('Screen Shot 2024-05-16 at 8.42.15 pm.png', caption='Random Forest Model', use_column_width=False)
+        st.image('Accuracy Comparison between RFE and all features .png', caption = 'Accuracy of the predicted prices over time', use_column_width = False)
 
     elif model_choice == 'SARIMA':
         st.subheader('SARIMA model details and predictions')
-        st.image('Consolidated BTC prices comparison.png', caption = 'SARIMA model', use_column_width = False, width = 400)
+        st.image('Consolidated BTC prices comparison.png', caption = 'SARIMA model', use_column_width = False)
     elif model_choice == 'LSTM':
         st.subheader('LSTM model details and predictions')
         st.write('As you can see below, the overall predicted price is quite good, but the forecasted price does not look good. I would advise you not to pay attention to this if you want to invest in Bitcoin...')  
-        st.image('Screen Shot 2024-05-18 at 5.35.41 pm.png', caption = 'LSTM model', use_column_width = True)
+        st.image('Screen Shot 2024-05-18 at 5.35.41 pm.png', caption = 'LSTM model', use_column_width = False)
 
 # Investment Strategy tab
 with tabs[5]:
@@ -108,10 +108,17 @@ with tabs[5]:
     st.write('Here you can choose whether the performance of the strategy, based on my predictions, or the performance with the actual prices.') 
     strategy_choice = st.selectbox('Select Strategy', ['Predicted Bitcoin Prices', 'Actual Bitcoin Prices'], key='strategy_choice')
     if strategy_choice == 'Predicted Bitcoin Prices':
-        st.write('Investment strategy based on predicted Bitcoin prices using Recursive Features Elimination. RFE output was the 5 most explicative features concerning Bitcoin prices.')
-        st.write('The top features are Google, Tesla, Nasdaq, S&P500, and the miner revenue')
+        st.subheader('Investment strategy based on predicted Bitcoin prices using Recursive Features Elimination.')
+        st.write(' RFE output was the 5 most explicative features concerning Bitcoin prices. The top features are Google, Tesla, Nasdaq, S&P500, and the miner revenue')
+        st.write('Following the computation of the Moving-Averages, you will find the performance of the portfolio, with a benchmark that is "Long" every period')
+        st.image('MA RFE.png', caption = 'Short and Long-term Moving Averages on predicted and forecasted prices', use_column_width = False)
+        st.image('Strat perf RFE.png', caption = 'Performance of the strategy and the benchmark', use_column_width = False)
+
     elif strategy_choice == 'Actual Bitcoin Prices':
-        st.write('Investment strategy based on actual Bitcoin prices')
+        st.subheader('Investment strategy based on actual Bitcoin prices')
+        st.write('Following the computation of the Moving-Averages, you will find the performance of the portfolio, with a benchmark that is "Long" every period')
+        st.image('MA actual prices.png', caption = 'Short and Long-term Moving Averages on actual and forecasted prices', use_column_width = False)
+        st.image('Strat perf actual prices.png', caption = 'Performance of the strategy and the benchmark', use_column_width = False)
 
 # Correlation tab
 with tabs[6]:
