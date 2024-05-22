@@ -71,12 +71,14 @@ with tabs[0]:
 # Navigation Links
  st.write("## Navigate to Sections")
  st.markdown("""
- - [Introduction](#introduction)
- - [Research Question and Literature](#research-question-and-literature)
- - [Methodology](#methodology)
- - [Results](#results)
- - [Investment Strategy](#investment-strategy)
- - [Conclusion](#conclusion)
+ - [Prices](#introduction)
+ - [Returns)
+ - [Volatility](#methodology)
+ - [Groups Analysis](#results)
+ - [Predictive Models](#investment-strategy)
+ - [Investment Strategy](#conclusion)
+ - [Correlation]
+ - [Crypto News]
 """)
 
  # Key Insights
@@ -93,12 +95,14 @@ with tabs[0]:
  st.markdown("""
  For detailed information about the project, methodology, and results, please refer to the following sections or visit the [GitHub repository](https://github.com/your-repo-link).
 
- - [Introduction](#introduction)
- - [Research Question and Literature](#research-question-and-literature)
- - [Methodology](#methodology)
- - [Results](#results)
- - [Investment Strategy](#investment-strategy)
- - [Conclusion](#conclusion)
+ - [Prices](#introduction)
+ - [Returns)
+ - [Volatility](#methodology)
+ - [Groups Analysis](#results)
+ - [Predictive Models](#investment-strategy)
+ - [Investment Strategy](#conclusion)
+ - [Correlation]
+ - [Crypto News]
  """)
    
 
