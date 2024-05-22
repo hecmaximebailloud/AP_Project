@@ -94,7 +94,7 @@ with tabs[4]:
 
     elif model_choice == 'SARIMA':
         st.subheader('SARIMA model details and predictions')
-        st.image('Consolidated BTC prices comparison.png', caption = 'SARIMA model', use_column_width =True, width = 300)
+        st.image('Consolidated BTC prices comparison.png', caption = 'SARIMA model', use_column_width =True, width = 100)
     elif model_choice == 'LSTM':
         st.subheader('LSTM model details and predictions')
         st.write('As you can see below, the overall predicted price is quite good, but the forecasted price does not look good. I would advise you not to pay attention to this if you want to invest in Bitcoin...')  
