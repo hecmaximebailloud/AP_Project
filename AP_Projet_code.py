@@ -298,6 +298,45 @@ with tabs[5]:
         - The model's performance depends on the quality and amount of training data.
         """)
 
+metrics_actual_strategy = {
+    "Mean Returns": 0.530479,
+    "Total Return": 5.481621,
+    "Standard Deviation Annualized": 0.572757,
+    "Sharpe Ratio": 0.926186
+}
+
+metrics_actual_benchmark = {
+    "Mean Returns": 0.507176,
+    "Total Return": 5.621199,
+    "Standard Deviation Annualized": 0.569447,
+    "Sharpe Ratio": 0.890646
+}
+
+metrics_predicted_strategy = {
+    "Mean Returns": 0.212736,
+    "Total Return": 2.216004,
+    "Standard Deviation Annualized": 0.54922,
+    "Sharpe Ratio": 0.387342
+}
+
+metrics_predicted_benchmark = {
+    "Mean Returns": 0.447542,
+    "Total Return": 4.997550,
+    "Standard Deviation Annualized": 0.52828,
+    "Sharpe Ratio": 0.847167
+}
+
+df_metrics_actual = pd.DataFrame({
+    "Metric": ["Mean Returns", "Total Return", "Standard Deviation Annualized", "Sharpe Ratio"],
+    "Strategy": [metrics_actual_strategy["Mean Returns"], metrics_actual_strategy["Total Return"], metrics_actual_strategy["Standard Deviation Annualized"], metrics_actual_strategy["Sharpe Ratio"]],
+    "Benchmark": [metrics_actual_benchmark["Mean Returns"], metrics_actual_benchmark["Total Return"], metrics_actual_benchmark["Standard Deviation Annualized"], metrics_actual_benchmark["Sharpe Ratio"]]
+})
+
+df_metrics_predicted = pd.DataFrame({
+    "Metric": ["Mean Returns", "Total Return", "Standard Deviation Annualized", "Sharpe Ratio"],
+    "Strategy": [metrics_predicted_strategy["Mean Returns"], metrics_predicted_strategy["Total Return"], metrics_predicted_strategy["Standard Deviation Annualized"], metrics_predicted_strategy["Sharpe Ratio"]],
+    "Benchmark": [metrics_predicted_benchmark["Mean Returns"], metrics_predicted_benchmark["Total Return"], metrics_predicted_benchmark["Standard Deviation Annualized"], metrics_predicted_benchmark["Sharpe Ratio"]]
+})
 
 # Investment Strategy tab
 with tabs[6]:
@@ -311,13 +350,30 @@ with tabs[6]:
         st.write(' RFE output was the 5 most explicative features concerning Bitcoin prices. The top features are Google, Tesla, Nasdaq, S&P500, and the miner revenue.')
         st.write('Following the computation of the Moving-Averages, you will find the performance of the portfolio, with a benchmark that is "Long" every period.')
         st.image('MA RFE.png', caption = 'Short and Long-term Moving Averages on predicted and forecasted prices', use_column_width = False)
+        st.write("### Performance Metrics (Strategy vs. Benchmark)")
+        st.table(df_metrics_predicted)
         st.image('Strat perf RFE.png', caption = 'Performance of the strategy and the benchmark', use_column_width = False)
 
     elif strategy_choice == 'Actual Bitcoin Prices':
         st.subheader('Investment strategy based on actual Bitcoin prices')
         st.write('Following the computation of the Moving-Averages, you will find the performance of the portfolio, with a benchmark that is "Long" every period.')
         st.image('MA actual prices.png', caption = 'Short and Long-term Moving Averages on actual and forecasted prices', use_column_width = False)
+        st.write("### Performance Metrics (Strategy vs. Benchmark)")
+        st.table(df_metrics_actual)
         st.image('Strat perf actual prices.png', caption = 'Performance of the strategy and the benchmark', use_column_width = False)
+
+    st.write("## Strategy Comparison")
+    st.write("""
+    The table below compares the key performance metrics of the strategy based on predicted Bitcoin prices and actual Bitcoin prices.
+    """)
+    comparison_metrics = {
+        "Metric": ["Mean Returns", "Total Return", "Standard Deviation Annualized", "Sharpe Ratio"],
+        "Predicted Strategy": [metrics_predicted_strategy["Mean Returns"], metrics_predicted_strategy["Total Return"], metrics_predicted_strategy["Standard Deviation Annualized"], metrics_predicted_strategy["Sharpe Ratio"]],
+        "Predicted Benchmark": [metrics_predicted_benchmark["Mean Returns"], metrics_predicted_benchmark["Total Return"], metrics_predicted_benchmark["Standard Deviation Annualized"], metrics_predicted_benchmark["Sharpe Ratio"]],
+        "Actual Strategy": [metrics_actual_strategy["Mean Returns"], metrics_actual_strategy["Total Return"], metrics_actual_strategy["Standard Deviation Annualized"], metrics_actual_strategy["Sharpe Ratio"]],
+        "Actual Benchmark": [metrics_actual_benchmark["Mean Returns"], metrics_actual_benchmark["Total Return"], metrics_actual_benchmark["Standard Deviation Annualized"], metrics_actual_benchmark["Sharpe Ratio"]]
+    }
+    st.table(pd.DataFrame(comparison_metrics))
 
 # Correlation tab
 with tabs[7]:
