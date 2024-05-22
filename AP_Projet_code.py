@@ -133,8 +133,11 @@ with tabs[7]:
     if news_articles:
         for article in news_articles:
             st.subheader(article['title'])
+            st.write(f"**Source:** {article['source']}")
+            st.write(f"**Published at:** {article['published_at']}")
             st.write(article['summary'])
             st.markdown(f"[Read more]({article['link']})")
+            st.write("---")
     else:
         st.write("Failed to fetch the latest news.")
 
@@ -147,8 +150,11 @@ with tabs[8]:
     if news_articles:
         for article in news_articles:
             st.subheader(article['title'])
+            st.write(f"**Source:** {article['source']}")
+            st.write(f"**Published at:** {article['published_at']}")
             st.write(article['summary'])
             st.markdown(f"[Read more]({article['link']})")
+            st.write("---")
     else:
         st.write("Failed to fetch the latest news.")
 
