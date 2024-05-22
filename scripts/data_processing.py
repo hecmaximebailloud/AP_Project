@@ -56,6 +56,29 @@ def calculate_volatility(df, window=4):
     volatility_df = df.rolling(window=window).std().replace([np.inf, -np.inf], np.nan).fillna(0)
     return volatility_df.add_suffix('_volatility')
 
+# scripts/news_scraper.py
+import requests
+from bs4 import BeautifulSoup
+
+def fetch_latest_news():
+    url = 'https://www.boursier.com/crypto-monnaies/actualites'
+    response = requests.get(url)
+    
+    if response.status_code != 200:
+        return []
+
+    soup = BeautifulSoup(response.content, 'html.parser')
+    articles = soup.find_all('div', class_='c-article-flux__content')
+
+    news_list = []
+    for article in articles:
+        title = article.find('a').get_text(strip=True)
+        link = article.find('a')['href']
+        summary = article.find('div', class_='c-article-flux__chapo').get_text(strip=True)
+        news_list.append({'title': title, 'link': 'https://www.boursier.com' + link, 'summary': summary})
+
+    return news_list
+
 
 
 
