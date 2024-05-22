@@ -119,8 +119,8 @@ with tabs[1]:
                 st.write("### Customize Plot")
                 chart_type = st.selectbox("Select Chart Type", ['Line Chart', 'Area Chart'], key='chart_type')
                 show_moving_average = st.checkbox("Show Moving Average", value=False, key='moving_average')
+                st.write("##### Choose a Moving average window between a 10-week and a 50-week period")
                 ma_window = st.slider("Moving Average Window", min_value=1, max_value=30, value=5, key='ma_window')
-                colors = st.color_picker("Pick a Color for the Plot", key='plot_color')
 
                 # Plot data
                 st.write("### Price Chart")
