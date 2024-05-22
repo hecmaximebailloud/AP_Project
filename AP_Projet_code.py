@@ -87,7 +87,9 @@ with tabs[4]:
     if model_choice == 'Random Forest':
         st.write('Random Forest model details and predictions.')
         st.write('Here, you can see the comparison of the predicted prices between Bitcoin actual prices, a Random Forest using all features (34) and a Random Forest using the 5 most explicative features (selected with Recursive Features Elimination)')
+        st.write('You will find below the accuracy comparison between both Random Forest models')
         st.image('Screen Shot 2024-05-16 at 8.42.15 pm.png', caption='Random Forest Model', use_column_width=True)
+        st.image('Accuracy Comparison between RFE and all features .png'), caption = 'Accuracy of the predicted prices over time', use_column_width = True')
 
     elif model_choice == 'SARIMA':
         st.write('SARIMA model details and predictions...')
