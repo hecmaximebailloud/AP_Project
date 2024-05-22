@@ -97,7 +97,7 @@ with tabs[4]:
         st.image('Consolidated BTC prices comparison.png', caption = 'SARIMA model', use_column_width =True)
     elif model_choice == 'LSTM':
         st.subheader('LSTM model details and predictions')
-        st.write('As you can see below, the overall predicted price is quite good, but the forecasted price does not look. I would advise you not to pay attention to this if you want to invest in Bitcoin...')  
+        st.write('As you can see below, the overall predicted price is quite good, but the forecasted price does not look good. I would advise you not to pay attention to this if you want to invest in Bitcoin...')  
         st.image('Screen Shot 2024-05-18 at 5.35.41 pm.png', caption = 'LSTM model', use_column_width = True)
 
 # Investment Strategy tab
