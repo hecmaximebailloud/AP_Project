@@ -32,7 +32,6 @@ dataset_returns = calculate_returns(merged_df)
 dataset_volatility = calculate_volatility(merged_df)
 
 # Streamlit interface
-st.set_page_config(page_title='Financial Analysis and Prediction App', layout='wide')
 
 custom_css = """
 <style>
