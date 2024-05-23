@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import os
 import datetime
-from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility, fetch_latest_news, get_countdown
+from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility, fetch_latest_news, get_countdown, halving_details, next_halving_date
 
 
 
@@ -402,14 +402,6 @@ with tabs[7]:
         except KeyError as e:
             st.error(f"Error selecting features for correlation: {e}")
 
-# Bitcoin halving dates
-halving_dates = {
-    "First Halving": "28th November 2012",
-    "Second Halving": "9th July 2016",
-    "Third Halving": "11th May 2020",
-    "Fourth Halving": "20th April 2024"
-}
-next_halving_date = datetime.datetime(2028, 4, 20)  # Adjust this date as necessary
 
 # Countdown to the next halving
 countdown = get_countdown(next_halving_date)
@@ -422,13 +414,17 @@ with tabs[8]:
     Bitcoin halving is an event that occurs approximately every four years, reducing the reward for mining new blocks by half. This event decreases the rate at which new bitcoins are created and reduces the total supply of bitcoins. Here are the historical halving dates and the next expected halving date.
     """)
 
-    st.write("### Historical Halving Dates")
-    for event, date in halving_dates.items():
-        st.write(f"- **{event}**: {date}")
+    st.write("### Historical Halving Events")
+    for detail in halving_details:
+        st.write(f"**{detail['event']}**")
+        st.write(f"- Date: {detail['date']}")
+        st.write(f"- Block Number: {detail['block_number']}")
+        st.write(f"- Block Reward Change: {detail['block_reward']}")
+        st.write("---")
 
     st.write("### Next Expected Halving Date")
     st.write(f"The next Bitcoin halving is expected to occur around **20th April 2028**.")
-
+    
     st.write("### Countdown to Next Halving")
     st.write(f"Time remaining until the next halving: **{countdown.days} days, {countdown.seconds // 3600} hours, {(countdown.seconds // 60) % 60} minutes, and {countdown.seconds % 60} seconds**.")
 
