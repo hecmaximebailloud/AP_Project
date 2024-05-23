@@ -431,6 +431,8 @@ with tabs[8]:
     st.write("""
     For more detailed information about Bitcoin halving and its implications, you can visit [this website](https://stormgain.com/blog/bitcoin-halving-dates-history).
     """)
+    st.write("### Learn More About Bitcoin Halving")
+    st.video("https://youtu.be/XqB2WoFmOKc?si=ztDfb211rpN3bk-0")
 
 
 # Bitcoin News tab
