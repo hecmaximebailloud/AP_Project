@@ -85,10 +85,11 @@ with tabs[0]:
  - [Prices](#prices)
  - [Returns](#returns)
  - [Volatility](#volatility)
+ - [Correlation](#correlation)
  - [Groups Analysis](#groups)
  - [Predictive Models](#models)
  - [Investment Strategy](#investment)
- - [Correlation](#correlation)
+ - [Bitcoin Halving](#halving)
  - [Crypto News](#news)
  """)
    
