@@ -10,6 +10,8 @@ This project displays the results of my ADA project which consists of predicting
 
 You can access the frontend with the Python file 'AP_projet_code.py'. 
 
+If you want to add or delete data, go to the 'data' folder. 
+
 Refer to the 'scripts' folder to access the data processing. 
 
 Refer to the 'images' folder to add pictures to the app. 
