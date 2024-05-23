@@ -66,7 +66,7 @@ with tabs[0]:
  st.write("""
  Welcome to the Bitcoin Price Prediction and Investment Strategy Dashboard App in the context of the Advanced Programming project.
 
- This project aims to develop a framework for predicting Bitcoin prices using various machine-learning models and economic indicators. We have used Random Forest, SARIMA, and LSTM models to analyze the data and develop investment strategies. Explore the different sections to learn more about the methodology, results, and insights.
+ This project aims to develop a framework for predicting Bitcoin prices using various machine-learning models and economic indicators. I have used Random Forest, SARIMA, and LSTM models to analyze the data and develop investment strategies. Explore the different sections to learn more about the methodology, results, and insights.
 """)
 
 
@@ -289,7 +289,7 @@ with tabs[6]:
         """)
         st.markdown("""
         **Key Points:**
-        - The full-feature model includes 34 features, capturing various economic indicators.
+        - The full-featured model includes 34 features, capturing various economic indicators.
         - The RFE model narrows down to 5 key features: Google, Tesla, Nasdaq, S&P500, and miner revenue.
         - The accuracy comparison highlights the improvement achieved through feature selection.
         """)
