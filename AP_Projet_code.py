@@ -408,30 +408,31 @@ countdown = get_countdown(next_halving_date)
 
 # Halving tab
 with tabs[8]:
-    st.header('Bitcoin Halving')
-    
-    st.write("""
+    st.title('Bitcoin Halving')
+
+    st.markdown("""
     Bitcoin halving is an event that occurs approximately every four years, reducing the reward for mining new blocks by half. This event decreases the rate at which new bitcoins are created and reduces the total supply of bitcoins. Here are the historical halving dates and the next expected halving date.
     """)
 
-    st.write("### Historical Halving Events")
+    st.header("Historical Halving Events")
     for detail in halving_details:
-        st.write(f"**{detail['event']}**")
-        st.write(f"- Date: {detail['date']}")
-        st.write(f"- Block Number: {detail['block_number']}")
-        st.write(f"- Block Reward Change: {detail['block_reward']}")
+        st.subheader(detail['event'])
+        st.write(f"**Date:** {detail['date']}")
+        st.write(f"**Block Number:** {detail['block_number']}")
+        st.write(f"**Block Reward Change:** {detail['block_reward']}")
         st.write("---")
 
-    st.write("### Next Expected Halving Date")
+    st.header("Next Expected Halving Date")
     st.write(f"The next Bitcoin halving is expected to occur around **20th April 2028**.")
-    
-    st.write("### Countdown to Next Halving")
-    st.write(f"Time remaining until the next halving: **{countdown.days} days, {countdown.seconds // 3600} hours, {(countdown.seconds // 60) % 60} minutes, and {countdown.seconds % 60} seconds**.")
 
-    st.write("""
-    For more detailed information about Bitcoin halving and its implications, you can visit [this website](https://stormgain.com/blog/bitcoin-halving-dates-history).
-    """)
-    st.write("### Learn More About Bitcoin Halving")
+    st.header("Countdown to Next Halving")
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Days", countdown.days)
+    col2.metric("Hours", countdown.seconds // 3600)
+    col3.metric("Minutes", (countdown.seconds // 60) % 60)
+    col4.metric("Seconds", countdown.seconds % 60)
+
+    st.header("Learn More About Bitcoin Halving")
     st.video("https://youtu.be/XqB2WoFmOKc?si=ztDfb211rpN3bk-0")
 
 
