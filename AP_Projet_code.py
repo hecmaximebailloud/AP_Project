@@ -413,7 +413,7 @@ with tabs[8]:
     st.title('Bitcoin Halving')
 
     st.markdown("""
-    Bitcoin halving is an event that occurs approximately every four years, reducing the reward for mining new blocks by half. This event decreases the rate at which new bitcoins are created and reduces the total supply of bitcoins. Here are the historical halving dates and the next expected halving date.
+    Bitcoin halving is an event that occurs approximately every four years, reducing the reward for mining new blocks by half. This event decreases the rate at which new bitcoins are created and reduces the total supply of bitcoins. Based on the current Bitcoin halving cycle and schedule, 100% of all Bitcoin will be mined sometime around the year 2140.
     """)
 
     st.header("Historical Halving Events")
