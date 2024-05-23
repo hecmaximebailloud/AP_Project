@@ -3,7 +3,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import os
-from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility, fetch_latest_news
+import datetime
+from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility, fetch_latest_news, get_countdown
 
 
 
@@ -56,7 +57,7 @@ dataset_volatility = calculate_volatility(merged_df)
 # Streamlit interface
 st.set_page_config(page_title='Financial Analysis and Prediction App', layout='wide')
 
-tabs = st.tabs(['Home', 'Prices', 'Returns', 'Volatility', 'Groups Analysis', 'Predictive Models', 'Investment Strategy', 'Correlation', 'Crypto News'])
+tabs = st.tabs(['Home', 'Prices', 'Returns', 'Volatility', 'Groups Analysis', 'Predictive Models', 'Investment Strategy', 'Correlation', 'Bitcoin Halving' 'Crypto News'])
 
 # Home tab
 with tabs[0]:
@@ -401,8 +402,43 @@ with tabs[7]:
         except KeyError as e:
             st.error(f"Error selecting features for correlation: {e}")
 
-# Bitcoin News tab
+# Bitcoin halving dates
+halving_dates = {
+    "First Halving": "28th November 2012",
+    "Second Halving": "9th July 2016",
+    "Third Halving": "11th May 2020",
+    "Fourth Halving": "20th April 2024"
+}
+next_halving_date = datetime.datetime(2028, 4, 20)  # Adjust this date as necessary
+
+# Countdown to the next halving
+countdown = get_countdown(next_halving_date)
+
+# Halving tab
 with tabs[8]:
+    st.header('Bitcoin Halving')
+    
+    st.write("""
+    Bitcoin halving is an event that occurs approximately every four years, reducing the reward for mining new blocks by half. This event decreases the rate at which new bitcoins are created and reduces the total supply of bitcoins. Here are the historical halving dates and the next expected halving date.
+    """)
+
+    st.write("### Historical Halving Dates")
+    for event, date in halving_dates.items():
+        st.write(f"- **{event}**: {date}")
+
+    st.write("### Next Expected Halving Date")
+    st.write(f"The next Bitcoin halving is expected to occur around **20th April 2028**.")
+
+    st.write("### Countdown to Next Halving")
+    st.write(f"Time remaining until the next halving: **{countdown.days} days, {countdown.seconds // 3600} hours, {(countdown.seconds // 60) % 60} minutes, and {countdown.seconds % 60} seconds**.")
+
+    st.write("""
+    For more detailed information about Bitcoin halving and its implications, you can visit [this website](https://stormgain.com/blog/bitcoin-halving-dates-history).
+    """)
+
+
+# Bitcoin News tab
+with tabs[9]:
     st.header('Latest Bitcoin and Cryptocurrencies News')
     api_key = 'e2542da4e232487f8a2b6e1702e8db2f'
     news_articles = fetch_latest_news(api_key)
