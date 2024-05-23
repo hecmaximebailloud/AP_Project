@@ -57,7 +57,7 @@ dataset_volatility = calculate_volatility(merged_df)
 # Streamlit interface
 st.set_page_config(page_title='Financial Analysis and Prediction App', layout='wide')
 
-tabs = st.tabs(['Home', 'Prices', 'Returns', 'Volatility', 'Groups Analysis', 'Predictive Models', 'Investment Strategy', 'Correlation', 'Bitcoin Halving', 'Crypto News'])
+tabs = st.tabs(['Home', 'Prices', 'Returns', 'Volatility', 'Correlation', 'Groups Analysis', 'Predictive Models', 'Investment Strategy', 'Bitcoin Halving', 'Crypto News'])
 
 # Home tab
 with tabs[0]:
@@ -222,9 +222,36 @@ with tabs[3]:
 
         except KeyError as e:
             st.error(f"Error selecting volatility columns: {e}")
+
+
+# Correlation tab
+with tabs[4]:
+    st.header('Correlation')
+    st.write(f'First, you need to choose which features you want to add in the correlation matrix. Then, You can customize the heatmap as you wish (color, size):')  
+    features = dataset_returns.columns.tolist()
+    selected_features = st.multiselect('Select Features', features, key='correlation_features')
+    if selected_features:
+        try:
+            correlation_matrix = dataset_returns[selected_features].corr()
+            st.write("Customize Heatmap")
+            cmap_option = st.selectbox('Select Color Map', ['coolwarm', 'viridis', 'plasma', 'inferno', 'magma', 'cividis'])
+            annot_option = st.checkbox('Show Annotations', value=True)
+            figsize_width = st.slider('Figure Width', min_value=5, max_value=15, value=10)
+            figsize_height = st.slider('Figure Height', min_value=5, max_value=15, value=6)
+            
+            # Display heatmap
+            st.write("Correlation Heatmap")
+            import seaborn as sns
+            import matplotlib.pyplot as plt
+
+            fig, ax = plt.subplots(figsize=(figsize_width, figsize_height))
+            sns.heatmap(correlation_matrix, annot=annot_option, cmap=cmap_option, ax=ax)
+            st.pyplot(fig)
+        except KeyError as e:
+            st.error(f"Error selecting features for correlation: {e}")
           
 # Groups tab
-with tabs[4]:
+with tabs[5]:
   st.header('Groups Analysis')
   group_choice = st.selectbox('Select what you want to see in details about groups', ['Groups Overview', 'Groups Importance', 'Importance Evolution'], key = 'group_choice')
   if group_choice == 'Groups Overview':
@@ -245,7 +272,7 @@ with tabs[4]:
 
 
 # Predictive Models tab
-with tabs[5]:
+with tabs[6]:
     st.header('Predictive Models')
     model_choice = st.selectbox('Select Model', ['Random Forest', 'SARIMA', 'LSTM'], key='model_choice')
     if model_choice == 'Random Forest':
@@ -340,7 +367,7 @@ df_metrics_predicted = pd.DataFrame({
 })
 
 # Investment Strategy tab
-with tabs[6]:
+with tabs[7]:
     st.header('Investment Strategy')
     st.subheader('Moving-Average Crossover Strategy')
     st.write('The strategy selected is the Moving-Average Crossover Strategy. This strategy involves taking long and short positions based on the crossover points of short-term and long-term moving averages, we buy when we forecast a price increase (positive signal) and go short when we forecast a decrease (negative signal).')  
@@ -376,31 +403,6 @@ with tabs[6]:
     }
     st.table(pd.DataFrame(comparison_metrics))
 
-# Correlation tab
-with tabs[7]:
-    st.header('Correlation')
-    st.write(f'First, you need to choose which features you want to add in the correlation matrix. Then, You can customize the heatmap as you wish (color, size):')  
-    features = dataset_returns.columns.tolist()
-    selected_features = st.multiselect('Select Features', features, key='correlation_features')
-    if selected_features:
-        try:
-            correlation_matrix = dataset_returns[selected_features].corr()
-            st.write("Customize Heatmap")
-            cmap_option = st.selectbox('Select Color Map', ['coolwarm', 'viridis', 'plasma', 'inferno', 'magma', 'cividis'])
-            annot_option = st.checkbox('Show Annotations', value=True)
-            figsize_width = st.slider('Figure Width', min_value=5, max_value=15, value=10)
-            figsize_height = st.slider('Figure Height', min_value=5, max_value=15, value=6)
-            
-            # Display heatmap
-            st.write("Correlation Heatmap")
-            import seaborn as sns
-            import matplotlib.pyplot as plt
-
-            fig, ax = plt.subplots(figsize=(figsize_width, figsize_height))
-            sns.heatmap(correlation_matrix, annot=annot_option, cmap=cmap_option, ax=ax)
-            st.pyplot(fig)
-        except KeyError as e:
-            st.error(f"Error selecting features for correlation: {e}")
 
 
 # Countdown to the next halving
