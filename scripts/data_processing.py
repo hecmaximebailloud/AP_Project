@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import datetime
 
 def load_and_preprocess_data(ticker, start_date, end_date, keep_columns):
     try:
@@ -76,7 +77,10 @@ def fetch_latest_news(api_key):
     
     return news_list
 
-
+def get_countdown(target_date):
+    now = datetime.datetime.now()
+    countdown = target_date - now
+    return countdown
 
 
 
