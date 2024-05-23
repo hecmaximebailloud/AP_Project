@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 import os
 import datetime
+import seaborn as sns
+import matplotlib.pyplot as plt
 from scripts.data_processing import preprocess_all_data, calculate_returns, calculate_volatility, fetch_latest_news, get_countdown, halving_details, next_halving_date
 
 
@@ -242,8 +244,6 @@ with tabs[4]:
             
             # Display heatmap
             st.write("Correlation Heatmap")
-            import seaborn as sns
-            import matplotlib.pyplot as plt
 
             fig, ax = plt.subplots(figsize=(figsize_width, figsize_height))
             sns.heatmap(correlation_matrix, annot=annot_option, cmap=cmap_option, ax=ax)
