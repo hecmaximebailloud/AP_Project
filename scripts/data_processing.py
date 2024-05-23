@@ -82,6 +82,36 @@ def get_countdown(target_date):
     countdown = target_date - now
     return countdown
 
+# Additional information for each halving
+halving_details = [
+    {
+        "event": "First Halving",
+        "date": "28th November 2012",
+        "block_number": 210000,
+        "block_reward": "50 BTC to 25 BTC"
+    },
+    {
+        "event": "Second Halving",
+        "date": "9th July 2016",
+        "block_number": 420000,
+        "block_reward": "25 BTC to 12.5 BTC"
+    },
+    {
+        "event": "Third Halving",
+        "date": "11th May 2020",
+        "block_number": 630000,
+        "block_reward": "12.5 BTC to 6.25 BTC"
+    },
+    {
+        "event": "Fourth Halving",
+        "date": "20th April 2024",
+        "block_number": 840000,
+        "block_reward": "6.25 BTC to 3.125 BTC"
+    }
+]
+
+next_halving_date = datetime.datetime(2028, 4, 20)
+
 
 
 
