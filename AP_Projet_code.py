@@ -257,6 +257,7 @@ with tabs[5]:
   group_choice = st.selectbox('Select what you want to see in details about groups', ['Groups Overview', 'Groups Importance', 'Importance Evolution'], key = 'group_choice')
   if group_choice == 'Groups Overview':
     st.header('Features and Groups')
+    st.write('Select a group and you will see the features that belong to this group')
     for group, features in feature_groups.items():
         with st.expander(group):
              st.markdown("\n".join([f"- {feature}" for feature in features]))
@@ -268,7 +269,10 @@ with tabs[5]:
   elif group_choice == 'Importance Evolution':
     st.header('Evolution of the two most important groups')
     st.image('Images/Evolution of groups importance BCM and EI .png', caption = 'Evolution of their importance over time', use_column_width = False)
-  
+    st.markdown("""
+        **Key Points:**
+        -  Importance seems to be traveling in opposite directions in a seesaw fashion for blockchain metrics and Equity Indices—an inverse relationship. An upsurge in the importance of one group infers a decline in the other group that outlines varied market dynamics.
+        """)
 
 
 
