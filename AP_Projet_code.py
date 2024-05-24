@@ -267,7 +267,7 @@ with tabs[5]:
 
   elif group_choice == 'Importance Evolution':
     st.header('Evolution of the two most important groups')
-    st.image('Evolution of groups importance BCM and EI .png', caption = 'Evolution of their importance over time', use_column_width = False)
+    st.image('Images/Evolution of groups importance BCM and EI .png', caption = 'Evolution of their importance over time', use_column_width = False)
   
 
 
@@ -281,8 +281,8 @@ with tabs[6]:
         st.write('Here, you can see the comparison of the predicted prices between Bitcoin actual prices, a Random Forest using all features (34) and a Random Forest using the 5 most explicative features (selected with Recursive Features Elimination).')
         st.write('The top features are Google, Tesla, Nasdaq, S&P500, and miner revenue.')
         st.write('You will find below the accuracy comparison between both Random Forest models.')
-        st.image('Screen Shot 2024-05-16 at 8.42.15 pm.png', caption='Random Forest Model', use_column_width=True)
-        st.image('Accuracy Comparison between RFE and all features .png', caption = 'Accuracy of the predicted prices over time', use_column_width = False)
+        st.image('Images/Screen Shot 2024-05-16 at 8.42.15 pm.png', caption='Random Forest Model', use_column_width=True)
+        st.image('Images/Accuracy Comparison between RFE and all features .png', caption = 'Accuracy of the predicted prices over time', use_column_width = False)
         st.write("### Insights")
         st.write("""
         The Random Forest model with all features shows a broad view of how different economic indicators influence Bitcoin prices. 
@@ -311,9 +311,9 @@ with tabs[6]:
     elif model_choice == 'LSTM':
         st.subheader('LSTM model details and predictions')
         st.write('As you can see below, the overall predicted price is quite good, but the forecasted price does not look good. I would advise you not to pay attention to this if you want to invest in Bitcoin...')  
-        st.image('Screen Shot 2024-05-18 at 5.35.41 pm.png', caption = 'LSTM model', use_column_width = False)
+        st.image('Images/Screen Shot 2024-05-18 at 5.35.41 pm.png', caption = 'LSTM model', use_column_width = False)
         st.write("### Predictions and Comparisons")
-        st.image('Screen Shot 2024-05-18 at 5.35.41 pm.png', caption='LSTM Model Predictions', use_column_width=True)
+        st.image('Images/Screen Shot 2024-05-18 at 5.35.41 pm.png', caption='LSTM Model Predictions', use_column_width=True)
         
         st.write("### Insights")
         st.write("""
@@ -378,18 +378,18 @@ with tabs[7]:
         st.subheader('Investment strategy based on predicted Bitcoin prices using Recursive Features Elimination.')
         st.write(' RFE output was the 5 most explicative features concerning Bitcoin prices. The top features are Google, Tesla, Nasdaq, S&P500, and the miner revenue.')
         st.write('Following the computation of the Moving-Averages, you will find the performance of the portfolio, with a benchmark that is "Long" every period.')
-        st.image('MA RFE.png', caption = 'Short and Long-term Moving Averages on predicted and forecasted prices', use_column_width = False)
+        st.image('Images/MA RFE.png', caption = 'Short and Long-term Moving Averages on predicted and forecasted prices', use_column_width = False)
         st.write("### Performance Metrics (Strategy vs. Benchmark)")
         st.table(df_metrics_predicted)
-        st.image('Strat perf RFE.png', caption = 'Performance of the strategy and the benchmark', use_column_width = False)
+        st.image('Images/Strat perf RFE.png', caption = 'Performance of the strategy and the benchmark', use_column_width = False)
 
     elif strategy_choice == 'Actual Bitcoin Prices':
         st.subheader('Investment strategy based on actual Bitcoin prices')
         st.write('Following the computation of the Moving-Averages, you will find the performance of the portfolio, with a benchmark that is "Long" every period.')
-        st.image('MA actual prices.png', caption = 'Short and Long-term Moving Averages on actual and forecasted prices', use_column_width = False)
+        st.image('Images/MA actual prices.png', caption = 'Short and Long-term Moving Averages on actual and forecasted prices', use_column_width = False)
         st.write("### Performance Metrics (Strategy vs. Benchmark)")
         st.table(df_metrics_actual)
-        st.image('Strat perf actual prices.png', caption = 'Performance of the strategy and the benchmark', use_column_width = False)
+        st.image('Images/Strat perf actual prices.png', caption = 'Performance of the strategy and the benchmark', use_column_width = False)
 
     st.write("## Strategy Comparison")
     st.write("""
