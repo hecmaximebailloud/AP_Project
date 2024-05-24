@@ -263,7 +263,7 @@ with tabs[5]:
 
   elif group_choice == 'Groups Importance':
     st.header('Importance of each group in the Random Forest model')
-    st.image("Group's Importance.png", caption = 'Importance of each group for the Random Forest predictions', use_column_width = False)
+    st.image("Images/Group's Importance.png", caption = 'Importance of each group for the Random Forest predictions', use_column_width = False)
 
   elif group_choice == 'Importance Evolution':
     st.header('Evolution of the two most important groups')
